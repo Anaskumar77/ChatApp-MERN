@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 
 const ChatSchema = new mongoose.Schema(
   {
@@ -25,3 +25,7 @@ const ChatSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+const ChatModel = mongoose.Aggregate.model("ChatModel", ChatSchema);
+
+export default ChatModel;
