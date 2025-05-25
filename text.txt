@@ -1,0 +1,21 @@
+GET /api/users/me – Get logged-in user info
+
+GET /api/users/:id – Get a specific user (useful for showing profile or chat)
+
+GET /api/users/ – Search/filter users to start new chats
+
+POST /api/chats/ – Start a chat (with one or more users)
+
+GET /api/chats/ – Fetch all chats for the current user
+
+GET /api/chats/:id – Get specific chat details (like participants)
+
+POST /api/messages/ – Send a message to a chat
+
+GET /api/messages/:chatId – Fetch all messages from a chat
+
+PUT /api/chats/:chatId/rename – Rename group chats
+
+PUT /api/chats/group/add – Add user to group
+
+PUT /api/chats/group/remove – Remove user from group
