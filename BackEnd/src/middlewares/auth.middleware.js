@@ -49,6 +49,10 @@ export const login = async (req, res) => {
   }
 };
 
-// router.get("/signin", async (req, res) => {
-//   const { email, password } = req.body;
-// });
+export const logout = async (req, res) => {
+  try {
+    return res.cookie("token", "", { maxAge: 0 });
+  } catch (err) {
+    return res.status(500).json({ message: `logout failed ${err.message}` });
+  }
+};

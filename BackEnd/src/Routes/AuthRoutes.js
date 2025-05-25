@@ -1,9 +1,8 @@
 import express from "express";
-import { signup } from "../middlewares/auth.middleware.js";
-import { login } from "../middlewares/auth.middleware.js";
+import { signup, login, logout } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 
 router.post("/signup", signup);
 router.post("/login", login);
-
+router.post("/logout", logout);
 export default router;
