@@ -1,9 +1,10 @@
-POST http://localhost:7000/api/auth/login
+POST http://localhost:7000/api/auth/signup
 Content-Type: application/json
 
 {
-    "email":"anas4@gmail.com",
-    "password":"Anas4123#"
+    "name":"Anas8",
+    "email":"anas8@gmail.com",
+    "password":"Anas8123#"
 
 }
 

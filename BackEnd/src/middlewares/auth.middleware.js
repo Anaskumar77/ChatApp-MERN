@@ -12,12 +12,18 @@ export const signup = async (req, res) => {
   if (!name || !email || !password) {
     return res.json({ message: "not enough signup data" });
   }
-  const salt = await bcrypt.genSalt(20);
+
+  const salt = await bcrypt.genSalt(8);
+
   const hashed_password = await bcrypt.hash(password, salt);
+
   const newUser = new UserModel({ name, email, password: hashed_password });
+
   try {
     const createdUser = await newUser.save();
+
     GenerateToken(createdUser._id, res);
+
     return res.json(createdUser);
   } catch (err) {
     return res.json({

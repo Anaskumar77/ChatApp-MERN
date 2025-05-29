@@ -1,8 +1,8 @@
-#login_page {
+#signup_page {
   --margin: 20px;
   --inputWidth: 80%;
 }
-#login_page {
+#signup_page {
   width: 100dvw;
   height: 100dvh;
   background-color: rgb(98, 152, 135);
@@ -12,21 +12,21 @@
   justify-content: space-between;
   overflow: hidden;
 }
-#login_page_form_container {
+#signup_page_form_container {
   width: 50dvw;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-evenly;
 }
-#login_page_illustration_container {
+#signup_page_illustration_container {
   width: 50dvw;
   margin: 20px;
   border-radius: 20px;
   height: calc(100% - var(--margin) * 2);
   background-color: rgb(4, 136, 63);
 }
-.login_input {
+.signup_input {
   background-color: rgb(255, 255, 255);
   width: var(--inputWidth);
 }
@@ -37,7 +37,7 @@
 }
 .input_password{
 } */
-#login_errors {
+#signup_errors {
   width: var(--inputWidth);
   height: 100px;
   background-color: darksalmon;

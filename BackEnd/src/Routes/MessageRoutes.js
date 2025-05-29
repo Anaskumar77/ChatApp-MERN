@@ -1,8 +1,7 @@
 import express from "express";
+import fetchLatestMessages
 const router = express.Router();
 
-router.post("/message", (req, res) => {
-  res.send("message Router");
-});
+router.post("/home/:userId", fetchLatestMessages);
 
 export default router;

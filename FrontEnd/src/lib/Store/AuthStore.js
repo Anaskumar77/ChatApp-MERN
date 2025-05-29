@@ -7,7 +7,7 @@ const AuthStore = create((set /* get */) => ({
 
   setAuthUser: (userData) => set({ authUser: userData }),
 
-  logIn: (userData) => set({ authUser: userData, isLoggedIn: true }),
+  login: (userData) => set({ authUser: userData, isLoggedIn: true }),
 
   logOut: () => set({ authUser: null, isLoggedIn: false }),
 }));
