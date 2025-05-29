@@ -1,26 +1,21 @@
 import React, { useState, useEffect, useRef } from "react";
 import api from "../lib/AxiosConfig.js";
+import authStore from "../lib/Store/AuthStore.js";
 import "../Styles/LoginPage.css";
+import PasswordCheck from "../utils/passwordCheck.js";
 const SignUpPage = () => {
   const name = useRef();
   const email = useRef();
   const [password, setPassword] = useState("");
-  let errors = [];
-  let User = {};
-  const PasswordCheck = (password) => {
-    setPassword(password);
-    if (!/.{8,}/.test(password)) errors.push("Must be at least 8 characters");
-    if (!/[a-z]/.test(password)) errors.push("Must include a lowercase letter");
-    if (!/[A-Z]/.test(password))
-      errors.push("Must include an uppercase letter");
-    if (!/\d/.test(password)) errors.push("Must include a digit");
-    if (!/[\W_]/.test(password))
-      errors.push("Must include a special character");
-    console.log(errors);
-    return errors;
-  };
 
-  const ErrorList = (errors) => {
+  const { authUser, signUp } = authStore();
+
+  let ErrorList;
+  //
+
+  //
+
+  const ErrorDiv = (errors) => {
     return (
       <li id="login_errors">
         {Array.isArray(errors) && errors.map((items) => <ul>{items}</ul>)}
@@ -28,13 +23,17 @@ const SignUpPage = () => {
     );
   };
 
+  //
+
   const HandleSubmit = (e) => {
     e.preventDefault();
     api
       .post("/auth/signup")
       .then((res) => res.json)
-      .then((result) => (User = result));
+      .then((result) => (authUser = result));
   };
+
+  //
 
   return (
     <div id="login_page">
@@ -56,7 +55,8 @@ const SignUpPage = () => {
         <input
           value={password}
           onChange={(e) => {
-            PasswordCheck(e.target.value);
+            setPassword(e.target.value);
+            ErrorList = PasswordCheck(password);
           }}
           className="login_input input_password"
           placeholder="password"
@@ -64,7 +64,7 @@ const SignUpPage = () => {
         <button className="login_input" type="submit">
           SignUp
         </button>
-        <ErrorList errors={errors}></ErrorList>
+        <ErrorList errors={ErrorList}></ErrorList>
       </form>
 
       <div id="login_page_illustration_container">
