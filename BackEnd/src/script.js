@@ -31,7 +31,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth/", authRoutes);
-app.use("/api/user/", Authorization, messageRoutes);
+app.use("/api/message/", Authorization, messageRoutes);
 
 server.listen(process.env.PORT, () => {
   const connection = connectDB();

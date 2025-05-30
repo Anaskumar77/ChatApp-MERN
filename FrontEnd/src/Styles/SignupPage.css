@@ -1,11 +1,11 @@
 #signup_page {
-  --margin: 20px;
+  --margin: 10px;
   --inputWidth: 80%;
 }
 #signup_page {
   width: 100dvw;
   height: 100dvh;
-  background-color: rgb(98, 152, 135);
+  background-color: rgb(235, 235, 235);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,33 +13,68 @@
   overflow: hidden;
 }
 #signup_page_form_container {
-  width: 50dvw;
+  width: calc(50% - var(--margin) * 2);
+  height: calc(100% - var(--margin) * 2);
   display: flex;
   flex-direction: column;
-  align-items: stretch;
-  justify-content: space-evenly;
+  align-items: center;
+  justify-content: center;
 }
 #signup_page_illustration_container {
-  width: 50dvw;
-  margin: 20px;
-  border-radius: 20px;
+  width: calc(50% - var(--margin) * 2);
   height: calc(100% - var(--margin) * 2);
-  background-color: rgb(4, 136, 63);
-}
-.signup_input {
-  background-color: rgb(255, 255, 255);
-  width: var(--inputWidth);
+
+  margin: var(--margin);
+  border-radius: 20px;
+  background-color: rgb(68, 68, 68);
 }
 
+#signup_h1_1,
+#signup_h1_2 {
+  font-size: 360%;
+  font-family: Arial, Helvetica, sans-serif;
+}
+#signup_h1_2 {
+  color: rgb(91, 91, 91);
+}
+
+.signup_input {
+  background-color: rgb(255, 255, 255);
+  height: 40px;
+  width: 70%;
+  margin-top: var(--margin);
+  border: none;
+  font-size: medium;
+  border-radius: calc(var(--margin) * 0.3);
+}
+.signup_input:focus {
+  outline: 2px solid rgb(124, 255, 179);
+}
 /* .input_name{
 }
 .input_email{ 
 }
 .input_password{
 } */
+.input_submit {
+  background-color: rgb(20, 20, 20);
+  color: white;
+}
+
+#error_container {
+  width: 70%;
+  min-height: 30px;
+  background-color: rgba(0, 0, 0, 0.116);
+}
 #signup_errors {
-  width: var(--inputWidth);
-  height: 100px;
-  background-color: darksalmon;
   color: red;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 400;
+  /* border: 10px; */
+}
+.error-focus:focus {
+  outline: 2px solid rgb(255, 124, 124);
+}
+.normal-focus:focus {
+  outline: 2px solid rgb(124, 255, 179);
 }

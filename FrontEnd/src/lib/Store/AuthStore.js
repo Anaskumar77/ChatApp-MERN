@@ -10,6 +10,7 @@ const AuthStore = create((set /* get */) => ({
   login: (userData) => set({ authUser: userData, isLoggedIn: true }),
 
   logOut: () => set({ authUser: null, isLoggedIn: false }),
+  
 }));
 
 export default AuthStore;

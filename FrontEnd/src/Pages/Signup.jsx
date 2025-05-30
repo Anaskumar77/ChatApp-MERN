@@ -8,26 +8,31 @@ const SignUpPage = () => {
   const name = useRef();
   const email = useRef();
   const [password, setPassword] = useState("");
+  const [ErrorList, setErrorList] = useState([]);
 
-  let ErrorList;
-
-  //
-
-  const ErrorDiv = (errors) => {
+  const ErrorDiv = ({ errors }) => {
     return (
-      <li id="signup_errors">
-        {Array.isArray(errors) && errors.map((items) => <ul>{items}</ul>)}
-      </li>
+      <div id="error_container">
+        {Array.isArray(errors) ? (
+          errors.map((items, key) => (
+            <h6 id="signup_errors">
+              {key + 1}:{items}
+            </h6>
+          ))
+        ) : (
+          <h6>hello</h6>
+        )}
+      </div>
     );
   };
 
   //
-  useEffect(() => {
-    fetch("http://localhost:7000/api/test")
-      .then((res) => res.json())
-      .then((data) => console.log(data))
-      .catch((err) => console.error(err));
-  }, []);
+  // useEffect(() => {
+  //   fetch("http://localhost:7000/api/test")
+  //     .then((res) => res.json())
+  //     .then((data) => console.log(data))
+  //     .catch((err) => console.error(err));
+  // }, []);
 
   const HandleSubmit = (e) => {
     console.log(name.current.value, email.current.value, password);
@@ -63,9 +68,8 @@ const SignUpPage = () => {
     <div id="signup_page">
       <form onSubmit={HandleSubmit} id="signup_page_form_container">
         <h4></h4>
-        <h1>Chat Anywhere</h1>
-        <h1>With Anyone</h1>
-        <h4>SignUp</h4>
+        <h1 id="signup_h1_1">Chat Anywhere</h1>
+        <h1 id="signup_h1_2">With Anyone</h1>
         <input
           ref={name}
           className="signup_input input_name"
@@ -74,21 +78,23 @@ const SignUpPage = () => {
         <input
           ref={email}
           className="signup_input input_email"
-          placeholder="email"
+          placeholder="Email"
         ></input>
         <input
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
-            ErrorList = PasswordCheck(password);
+            setErrorList(PasswordCheck(e.target.value));
           }}
-          className="signup_input input_password"
-          placeholder="password"
+          className={`signup_input input_password ${
+            ErrorList.length > 0 ? "error-focus" : "normal-focus"
+          }`}
+          placeholder="Password"
         ></input>
-        <button className="signup_input" type="submit">
+        {password != "" ? <ErrorDiv errors={ErrorList}></ErrorDiv> : <></>}
+        <button className="signup_input input_submit" type="submit">
           SignUp
         </button>
-        {<ErrorDiv errors={ErrorList}></ErrorDiv>}
       </form>
 
       <div id="signup_page_illustration_container">

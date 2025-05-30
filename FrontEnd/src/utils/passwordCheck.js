@@ -5,7 +5,6 @@ const PasswordCheck = (password) => {
   if (!/[A-Z]/.test(password)) errors.push("Must include an uppercase letter");
   if (!/\d/.test(password)) errors.push("Must include a digit");
   if (!/[\W_]/.test(password)) errors.push("Must include a special character");
-  console.log(errors);
   return errors;
 };
 
