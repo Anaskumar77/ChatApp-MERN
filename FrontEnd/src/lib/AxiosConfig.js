@@ -10,6 +10,8 @@ const api = axios.create({
 
 export default api;
 
+// i think its not working or i dont understand why it makes troble  *_*
+
 // api.interceptors.request.use(
 //   (config) => {
 //     const token = localStorage.getItem("auth_token"); // Get token from browser

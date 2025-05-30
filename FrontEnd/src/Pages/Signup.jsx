@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import api from "../lib/AxiosConfig.js";
+import { useState, useRef } from "react";
+// import api from "../lib/AxiosConfig.js";
 import axios from "axios";
 // import authStore from "../lib/Store/AuthStore.js";
 import "../Styles/SignupPage.css";
@@ -50,14 +50,19 @@ const SignUpPage = () => {
           withCredentials: true,
         }
       )
-      .then((res) => res.json)
-      .then((result) => {
-        console.log(result);
-        if (result.status.ok) {
-          // after signup logic
-          console.log("ok", result);
+      .then((res) => {
+        console.log(res);
+        if (res.status == 200 || res.statusText == "OK") {
+          //
+          //redirection logic
+          //
+          //
         } else {
-          console.log("not Okey", result);
+          //
+          //showing error logic
+          //
+          //
+          console.log(res);
         }
       });
   };
