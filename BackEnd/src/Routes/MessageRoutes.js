@@ -4,6 +4,7 @@ import {
   fetchChatMessages,
   sendMessages,
 } from "../middlewares/message.middleware.js";
+
 const router = express.Router();
 
 // this all have user info in req part

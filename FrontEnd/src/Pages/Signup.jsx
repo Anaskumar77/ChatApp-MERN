@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
-// import api from "../lib/AxiosConfig.js";
-import axios from "axios";
-// import authStore from "../lib/Store/AuthStore.js";
+import { useNavigate } from "react-router-dom";
+import authStore from "../lib/Store/AuthStore.js";
 import "../Styles/SignupPage.css";
 import PasswordCheck from "../utils/passwordCheck.js";
 const SignUpPage = () => {
@@ -9,62 +8,31 @@ const SignUpPage = () => {
   const email = useRef();
   const [password, setPassword] = useState("");
   const [ErrorList, setErrorList] = useState([]);
+  const { signup } = authStore();
+  const navigate = useNavigate();
 
   const ErrorDiv = ({ errors }) => {
     return (
       <div id="error_container">
-        {Array.isArray(errors) ? (
-          errors.map((items, key) => (
-            <h6 id="signup_errors">
-              {key + 1}:{items}
-            </h6>
-          ))
-        ) : (
-          <h6>hello</h6>
-        )}
+        {Array.isArray(errors)
+          ? errors.map((items, key) => (
+              <h6 id="signup_errors">
+                {key + 1}:{items}
+              </h6>
+            ))
+          : null}
       </div>
     );
   };
 
-  //
-  // useEffect(() => {
-  //   fetch("http://localhost:7000/api/test")
-  //     .then((res) => res.json())
-  //     .then((data) => console.log(data))
-  //     .catch((err) => console.error(err));
-  // }, []);
-
-  const HandleSubmit = (e) => {
-    console.log(name.current.value, email.current.value, password);
+  const HandleSubmit = async (e) => {
     e.preventDefault();
-
-    axios
-      .post(
-        "http://localhost:7000/api/auth/signup",
-        {
-          name: name.current.value,
-          email: email.current.value,
-          password,
-        },
-        {
-          withCredentials: true,
-        }
-      )
-      .then((res) => {
-        console.log(res);
-        if (res.status == 200 || res.statusText == "OK") {
-          //
-          //redirection logic
-          //
-          //
-        } else {
-          //
-          //showing error logic
-          //
-          //
-          console.log(res);
-        }
-      });
+    const payload = {
+      name: name.current.value,
+      email: email.current.value,
+      password,
+    };
+    signup(payload, navigate);
   };
 
   //

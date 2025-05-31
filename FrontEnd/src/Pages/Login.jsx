@@ -1,29 +1,21 @@
 import { useRef } from "react";
-import axios from "axios";
 import "../Styles/SignupPage.css";
+import AuthStore from "../lib/Store/AuthStore.js";
+import { useNavigate } from "react-router-dom";
 const LoginPage = () => {
   const email = useRef();
   const password = useRef();
-  let User;
+
+  const { login } = AuthStore();
+  const navigate = useNavigate();
+
   const HandleSubmit = (e) => {
     e.preventDefault();
-    try {
-      axios
-        .post(
-          "http://localhost:7000/api/auth/login",
-          { email: email.current.value, password: password.current.value },
-          {
-            withCredentials: true,
-          }
-        )
-        .then((result) => {
-          console.log(result, result.data);
-          User = result.data;
-          console.log(User);
-        });
-    } catch (err) {
-      console.log(err.message);
-    }
+    const payload = {
+      email: email.current.value,
+      password: password.current.value,
+    };
+    login(payload, navigate);
   };
 
   return (

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const RoomSchema = new mongoose.Schema(
   {
     name: {
-      type: String,
+      type: String, // if private > other user name || group name
       required: true,
     },
 
@@ -12,16 +12,16 @@ const RoomSchema = new mongoose.Schema(
       default: false,
     },
 
-    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "UserModel" }],
+    users: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 
     admin: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "UserModel",
+      ref: "User",
     },
 
     lastMessage: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "MessageModel",
+      ref: "Message",
     },
 
     Group_avatar: {

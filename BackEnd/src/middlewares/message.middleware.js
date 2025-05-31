@@ -8,9 +8,19 @@ export const fetchLatestChats = async (req, res) => {
   // req have userInfo from authorization
   const userId = req.user._id;
 
+  // response has room_profile,room_lastMessage,message_time,message_sender,
+  const latestMessages = RoomModel.aggregate([
+    {
+      //  filter
+      // $match: { users: userId },
+      //  lookup
+      // $lookup: {},
+    },
+  ]);
+
   //get all the rooms , that the current user is part of
 
-  //aggregate [ filter , lookup , sort , shape the output ]
+  //aggregate [ filter , lookup , sort , goining.]
 
   try {
     const response = await RoomModel.aggregate();

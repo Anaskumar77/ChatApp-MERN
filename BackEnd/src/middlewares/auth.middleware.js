@@ -1,11 +1,34 @@
-// import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 // import mongoose from "mongoose";
 import UserModel from "../Models/userModel.js";
 import GenerateToken from "../lib/GenerateToken.js";
 import User from "../Models/userModel.js";
+import jwt from "jsonwebtoken";
 
 //
+// if token in cookie, atomaticaly send with req by allowing withCredentials: true ,
+//if token stored in localStorage/session storage  ,manually add it in header , use bearer
+
+export const authCheck = async (req, res) => {
+  const authToken = req.cookies.authToken;
+  console.log("authToken : ", authToken);
+  if (!authToken) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+  try {
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+    console.log("decoded : ", decoded);
+    const user = await User.findOne({ _id: decoded.id });
+    console.log("user : ", user);
+
+    if (!user) {
+      return res.status(403).json({ message: "invalid token" });
+    }
+    return res.status(200).json(user);
+  } catch (err) {
+    return res.json({ message: err.message });
+  }
+};
 
 export const signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -34,10 +57,8 @@ export const signup = async (req, res) => {
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email);
   try {
     const fetched_user = await User.findOne({ email: email });
-    console.log(fetched_user);
     if (!fetched_user) {
       return res.status(400).json({ message: "user does not exist" });
     }

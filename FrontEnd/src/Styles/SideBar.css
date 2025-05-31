@@ -1,0 +1,17 @@
+#SideBar_Container {
+  width: 80px;
+  height: 100dvh;
+  background-color: #656565;
+}
+#SideBar_Options_div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+.SideBar_option {
+  width: 50px;
+  height: 50px;
+  margin: 15px;
+  background-color: rgb(65, 65, 65);
+}
