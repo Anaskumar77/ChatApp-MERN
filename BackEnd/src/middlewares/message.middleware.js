@@ -9,6 +9,7 @@ export const fetchLatestChats = async (req, res) => {
   const userId = req.user._id;
 
   // response has room_profile,room_lastMessage,message_time,message_sender,
+
   const latestMessages = RoomModel.aggregate([
     {
       //  filter

@@ -7,11 +7,11 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./Styles/App.css";
 
 const App = () => {
-  const { authUser, authCheck } = AuthStore();
+  const { authCheck } = AuthStore();
   const navigate = useNavigate();
   useEffect(() => {
     authCheck(navigate);
-  }, [authUser, authCheck, navigate]);
+  }, []);
 
   return (
     <Routes>

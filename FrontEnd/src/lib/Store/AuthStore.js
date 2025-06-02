@@ -1,5 +1,8 @@
 import { create } from "zustand";
 import axios from "axios";
+import { io } from "socket.io-client";
+import HandleClientSockets from "../HandleClientSockets.js";
+const BASE_URL = "http://localhost:7000/";
 
 const AuthStore = create((set, get) => ({
   authUser: null,
@@ -7,24 +10,56 @@ const AuthStore = create((set, get) => ({
   isSigningUp: false,
   isLoggingIn: false,
   isProfileUpdating: false,
+  socket: null,
 
   setAuthUser: (userData) => set({ authUser: userData }),
+  connectSocket: () => {
+    //
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
 
-  authCheck: (navigate) => {
+    const socket = io("http://localhost:7000/", {
+      query: {
+        userId: authUser._id,
+      },
+    });
+
+    console.log("socket is connecting");
+    socket.connect();
+
+    set({ socket: socket });
+
+    HandleClientSockets(socket);
+  },
+  disconnectSocket: () => {
+    //
+    if (get().socket?.connected) get().socket.disconnect();
+  },
+
+  authCheck: async (navigate) => {
+    //
     set({ isLoggingIn: true });
     console.log("authCheck started");
-    axios
-      .get("http://localhost:7000/api/auth/authCheck", {
+
+    try {
+      const res = await axios.get("http://localhost:7000/api/auth/authCheck", {
         withCredentials: true,
-      })
-      .then((res) => {
-        if (res.status == 200) {
-          console.log(res);
-          set({ authUser: res.body });
-        } else {
-          navigate("/login");
-        }
       });
+
+      console.log(res);
+      if (res.status === 200) {
+        set({ authUser: res.data });
+        get().connectSocket();
+      } else {
+        console.warn("Non-200 status:", res.status);
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error("authCheck failed:", err.message);
+      if (err.response?.status === 401) {
+        navigate("/login");
+      }
+    }
   },
 
   login: (payload, navigate) => {
@@ -36,9 +71,14 @@ const AuthStore = create((set, get) => ({
         })
         .then((result) => {
           set({ authUser: result.data });
+
           console.log(get().authUser);
+
           if (result.status == 200) {
+            //
             navigate("/home");
+
+            get().connectSocket();
           }
         });
     } catch (err) {
@@ -58,7 +98,10 @@ const AuthStore = create((set, get) => ({
         .then((res) => {
           console.log(res, res.status);
           if (res.status == 200) {
+            //
             navigate("/login");
+
+            get().connectSocket();
           }
         });
     } catch (err) {
@@ -67,7 +110,12 @@ const AuthStore = create((set, get) => ({
     console.log("final");
     set({ isSigningUp: false });
   },
-  logout: () => set({ authUser: null, isLoggedIn: false }),
+  logout: () => {
+    //
+    set({ authUser: null, isLoggedIn: false });
+
+    get().disconnectSocket();
+  },
 }));
 
 export default AuthStore;

@@ -5,7 +5,7 @@ import connectDB from "./lib/DBConnect.js";
 import authRoutes from "./Routes/AuthRoutes.js";
 import messageRoutes from "./Routes/MessageRoutes.js";
 import Authorization from "./middlewares/Authorization.js";
-import { server, app } from "./lib/Socket.js";
+import { server, app } from "./Socket.js";
 import cors from "cors";
 
 dotenv.config();
