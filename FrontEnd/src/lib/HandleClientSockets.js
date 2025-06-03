@@ -1,12 +1,20 @@
+import AuthStore from "./Store/AuthStore.js";
 //
 //
-export const HandleClientSockets = (socket) => {
-  socket.on(
-    "getOnlineUsers",
-    (socket.id = {
-      //
-      //logic
-      //
-    })
-  );
+const HandleClientSockets = (socket) => {
+  const { setOnlineUsers, onlineUsers } = AuthStore.getState();
+  console.log("Handle Client Sockets start");
+
+  //______________________________________________
+
+  socket.on("getOnlineUsers", (userIds) => {
+    //
+    console.log("userIds : ", userIds);
+
+    setOnlineUsers(userIds);
+  });
+
+  //______________________________________________
 };
+
+export default HandleClientSockets;

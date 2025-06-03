@@ -1,6 +1,6 @@
 import MessageModel from "../Models/messageModel.js";
 import RoomModel from "../Models/roomModel.js";
-
+import { io, getReceiverSocketId } from "../Socket.js";
 //
 
 export const fetchLatestChats = async (req, res) => {
@@ -57,7 +57,11 @@ export const sendMessages = (req, res) => {
   //
   //
   // sending logic
-  //
+  //if q clint is online you can send the messge live
+  const receiverSocketId = getReceiverSocketId(userId);
+  if (receiverSocketId) io.to(receiverSocketId).emit("message");
+
   //
 };
+
 // export const

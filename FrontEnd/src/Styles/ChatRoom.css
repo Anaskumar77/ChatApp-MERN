@@ -1,0 +1,82 @@
+* {
+  overflow: scroll;
+}
+#chat_room_container {
+  width: 45dvw;
+  min-width: 375px;
+  height: 100dvh;
+  background-color: cornflowerblue;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#chat_room_container header {
+  height: 65px;
+  padding: 12px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#ch_h_pfp_div {
+  height: 100%;
+  aspect-ratio: 1 /1;
+}
+#ch_h_name_lastSeen_div {
+  height: 100%;
+}
+#ch_h_options_div {
+  height: 100%;
+  aspect-ratio: 3/1;
+}
+
+#ch_main_div {
+  flex: 1;
+  width: 100%;
+  background-color: burlywood;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+}
+#ch_main_inner_div {
+  background-color: blueviolet;
+  width: 100%;
+  height: 98%;
+}
+#chat_room_container > footer {
+  width: 100%;
+  max-height: 80px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  column-gap: 8px;
+}
+#ch_f_addButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#ch_f_addButton,
+#ch_f_sendButton {
+  height: 46px;
+  width: 46px;
+  border-radius: 23px;
+  background-color: rgba(255, 255, 255, 0.534);
+}
+#ch_f_input {
+  flex: 1;
+  height: 46px;
+  border: none;
+  border-radius: 23px;
+  background-color: rgba(255, 255, 255, 0.534);
+  padding-left: 23px;
+  padding-right: 23px;
+}
+#ch_f_input:focus {
+  outline: none;
+}
+#ch_f_sendButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -7,10 +7,12 @@ import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import "./Styles/App.css";
 
 const App = () => {
-  const { authCheck } = AuthStore();
   const navigate = useNavigate();
+  const authCheck = AuthStore((state) => state.authCheck);
+
   useEffect(() => {
     authCheck(navigate);
+    // console.log(onlineUsers);
   }, []);
 
   return (

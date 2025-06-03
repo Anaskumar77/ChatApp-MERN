@@ -15,6 +15,10 @@ const io = new Server(server, {
 
 console.log("socket.js running");
 
+export const getReceiverSocketId = (userId) => {
+  return onlineUsers[userId];
+};
+
 const onlineUsers = {}; // {userId : socket.id}
 
 io.on("connection", (socket) => {
@@ -24,10 +28,9 @@ io.on("connection", (socket) => {
   //  store online users funtion
   const userId = socket.handshake.query.userId;
 
-  io.emit("getOnlineUsers", Object.keys(onlineUsers));
-  if (userId) {
-    onlineUsers[userId] = socket.id;
-  }
+  onlineUsers[userId] = socket.id;
+
+  io.emit("getOnlineUsers", Object.keys(onlineUsers)); // emitting the userID / authUser._id to each client
 
   //
   socketHandler(socket);
@@ -35,6 +38,7 @@ io.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("socket disconnected", socket.id);
+
     delete onlineUsers[userId];
   });
 });

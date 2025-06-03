@@ -11,8 +11,12 @@ const AuthStore = create((set, get) => ({
   isLoggingIn: false,
   isProfileUpdating: false,
   socket: null,
+  onlineUsers: null,
+
+  setOnlineUsers: (userIds) => set({ onlineUsers: [...userIds] }),
 
   setAuthUser: (userData) => set({ authUser: userData }),
+
   connectSocket: () => {
     //
     const { authUser } = get();
@@ -28,13 +32,17 @@ const AuthStore = create((set, get) => ({
     socket.connect();
 
     set({ socket: socket });
-
     HandleClientSockets(socket);
   },
+
+  //
+
   disconnectSocket: () => {
     //
     if (get().socket?.connected) get().socket.disconnect();
   },
+
+  //
 
   authCheck: async (navigate) => {
     //
@@ -48,10 +56,12 @@ const AuthStore = create((set, get) => ({
 
       console.log(res);
       if (res.status === 200) {
+        console.log("1");
         set({ authUser: res.data });
         get().connectSocket();
+        console.log("2");
       } else {
-        console.warn("Non-200 status:", res.status);
+        console.log("Non-200 status:", res.status);
         navigate("/login");
       }
     } catch (err) {
@@ -61,6 +71,8 @@ const AuthStore = create((set, get) => ({
       }
     }
   },
+
+  //
 
   login: (payload, navigate) => {
     set({ isLoggedIn: true });
@@ -86,6 +98,9 @@ const AuthStore = create((set, get) => ({
     }
     set({ isLoggingIn: false });
   },
+
+  //
+
   signup: (payload, navigate) => {
     console.log(payload);
     set({ isSigningUp: true });
@@ -110,6 +125,9 @@ const AuthStore = create((set, get) => ({
     console.log("final");
     set({ isSigningUp: false });
   },
+
+  //
+
   logout: () => {
     //
     set({ authUser: null, isLoggedIn: false });

@@ -1,6 +1,6 @@
 import React from "react";
 import SideBar from "../Components/SideBar.jsx";
-import ChatBar from "../Components/ChatBar.jsx";
+import RecentChatBar from "../Components/RecentChatBar.jsx";
 import ChatRoom from "../Components/ChatRoom.jsx";
 
 //
@@ -18,9 +18,9 @@ const HomePage = () => {
       }}
       id="HomePage_container"
     >
-      <SideBar></SideBar>
-      <ChatBar></ChatBar>
-      <ChatRoom></ChatRoom>
+      <SideBar />
+      <RecentChatBar />
+      <ChatRoom />
     </div>
   );
 };

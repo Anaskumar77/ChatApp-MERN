@@ -1,0 +1,96 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+#r_chatbar_container {
+  background-color: #537d5d;
+  height: 100dvh;
+  /* width: 300px; */
+}
+#ChatBar_search_div {
+  height: 65px;
+  display: flex;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+  background-color: #73946b;
+}
+#ChatBar_search_div input {
+  background-color: #ffffff61;
+  border: none;
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  padding-left: 20px;
+  caret-color: rgb(111, 1, 155);
+}
+#ChatBar_search_div input:focus {
+  outline: none;
+}
+#ChatBar_search_div input::placeholder {
+  color: white;
+  font-weight: 400;
+}
+
+/*  */
+
+#ChatBar_RecentMessages {
+  width: 100%;
+  min-height: 0;
+  overflow-y: auto;
+  height: 100vh;
+  /* height:; */
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+#r_border_botton {
+  height: 10px;
+  width: 100%;
+  background-color: darkorchid;
+}
+
+.messagePreviewDiv {
+  width: 100%;
+  height: 80px;
+  border: 1px solid rgb(0, 0, 0);
+  display: flex;
+}
+.mp_avatarDiv {
+  height: 100%;
+  aspect-ratio: 1/1;
+  background-color: blueviolet;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.mp_avatarDiv div {
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background-color: rgb(80, 24, 133);
+}
+.mp_subDiv {
+  flex: 1;
+  display: grid;
+  grid-template-rows: 1, 1;
+}
+.mp_name_time_div {
+  background-color: beige;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.mp_name_time_div h5 {
+}
+.mp_name_time_div h6 {
+}
+
+.mp_message_div {
+  background-color: azure;
+  align-content: center;
+}
+.mp_message_div h6 {
+}
