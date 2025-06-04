@@ -1,52 +1,41 @@
 import MessageModel from "../Models/messageModel.js";
 import RoomModel from "../Models/roomModel.js";
+import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
 //
+export const sendSearchedUsers = (req, res) => {
+  //
+  // get limited user
 
+  return res.status(200).json({ message: " go work in it" });
+};
 export const fetchLatestChats = async (req, res) => {
   //
-  // req have userInfo from authorization
-  const userId = req.user._id;
-
-  // response has room_profile,room_lastMessage,message_time,message_sender,
-
-  const latestMessages = RoomModel.aggregate([
-    {
-      //  filter
-      // $match: { users: userId },
-      //  lookup
-      // $lookup: {},
-    },
-  ]);
-
-  //get all the rooms , that the current user is part of
-
-  //aggregate [ filter , lookup , sort , goining.]
-
+  const userId = req.user._id; // only exists if it has authorized
   try {
-    const response = await RoomModel.aggregate();
+    //
+    const recentChats = await RoomModel.find({
+      $or: [{ users: userId }, { admin: userId }],
+    });
+
+    if (recentChats) return res.status(200).json(recentChats);
+
+    //
   } catch (err) {
     console.log(err.message);
-    res.json({ message: err.message });
+    return res.json({ message: err.message });
   }
-
-  //get the latest messege of each room
-
-  //sort the room by descending order
-
-  //limit the number of shown
-
-  //populate message and user data
-
-  //
-  //
-  //getting messages from mongoDB
-  //
-  //
 };
 
 export const fetchChatMessages = (req, res) => {
   //
+  const userId = req.user._id;
+
+  //  get reciever id
+
+  //  find messages with user and receiver are either sender or receiver in messageModel
+  //
+
   //
   // grtting specific chat messages logic
   //
@@ -55,6 +44,7 @@ export const fetchChatMessages = (req, res) => {
 
 export const sendMessages = (req, res) => {
   //
+  //save it to the data base
   //
   // sending logic
   //if q clint is online you can send the messge live

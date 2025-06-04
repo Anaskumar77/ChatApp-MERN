@@ -4,9 +4,10 @@ import ScrollableTabsButtonPrevent from "./TabDiv.jsx";
 import "../Styles/RecentChatBar.css";
 import ChatStore from "../lib/Store/ChatStore.js";
 import AuthStore from "../lib/Store/AuthStore.js";
+import SearchWindow from "./SearchWindow.jsx";
+
 const RecentChatBar = () => {
   //
-  const [recentMessages, setRecentMessages] = useState([]);
 
   const getUsers = ChatStore((state) => state.getUsers);
   const selectedUser = ChatStore((state) => state.selectedUser);
@@ -14,15 +15,23 @@ const RecentChatBar = () => {
   const setSelectedUser = ChatStore((state) => state.setSelectedUser);
   const onlineUsers = AuthStore((state) => state.onlineUsers);
 
+  const [recentMessages, setRecentMessages] = useState([]);
+  const [isSearchOn, setIsSearchOn] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    //
     getUsers();
   }, []);
+
   useEffect(() => {
+    //
     console.log(onlineUsers);
   }, [onlineUsers]);
+
   const RecentMessageClick = (user) => {
+    //
     setSelectedUser(user);
     // get messages logic\
   };
@@ -55,7 +64,13 @@ const RecentChatBar = () => {
   return (
     <div id="r_chatbar_container">
       <div id="ChatBar_search_div">
-        <input type="input" placeholder="Search"></input>
+        <input
+          onClick={() => {
+            setIsSearchOn((prev) => !prev);
+          }}
+          type="input"
+          placeholder="Search"
+        ></input>
       </div>
       <div id="ChatBar_slider_options">
         <ScrollableTabsButtonPrevent />

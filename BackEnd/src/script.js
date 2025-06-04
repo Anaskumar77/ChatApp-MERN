@@ -25,13 +25,8 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "CORS is working!" });
 });
 
-app.get("/", (req, res) => {
-  console.log(connection);
-  res.send(connection);
-});
-
 app.use("/api/auth/", authRoutes);
-app.use("/api/message/", Authorization, messageRoutes);
+app.use("/api/message/", messageRoutes);
 
 server.listen(process.env.PORT, () => {
   const connection = connectDB();

@@ -21,10 +21,26 @@ const ChatStore = create((set, get) => ({
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
+  currentTab: "Online",
 
-  //
   setSelectedUser: (user) => {
     set({ selectedUser: user });
+  },
+
+  setCurrentTab: (tabName) => {
+    set({ currentTab: tabName });
+    console.log("current tab : ", get().currentTab);
+  },
+
+  getSearchedUsers: async (inputText, limit) => {
+    try {
+      const res = await axios.get(
+        `http://localhost:7000/api/message/searchUsers/:${inputText}/:${limit}`
+      );
+      console.log(res);
+    } catch (err) {
+      console.error("getSearchedUsers error : ", err.messages);
+    }
   },
 
   getUsers: async () => {

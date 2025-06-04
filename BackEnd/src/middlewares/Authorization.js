@@ -1,25 +1,26 @@
 import jwt from "jsonwebtoken";
 import UserModel from "../Models/userModel.js";
-
+import User from "../Models/userModel.js";
 const Authorization = async (req, res, next) => {
-  const authHeader = req.body.Authorization;
+  const authToken = req.cookies.authToken;
 
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.json({ message: "unAuthorized" });
+  if (!authToken) {
+    return res.status(401).json({ message: "unauthorized : no token" });
   }
   try {
-    const verified_ID = jwt.verify(token, process.env.JWT_SECRET_KEY);
-    console.log(verified_ID);
-    const user = await UserModel.findOne({ _id: verified_ID }).select(
-      "-password"
-    );
-    console.log(user);
+    const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
+    const user = await User.findOne({ _id: decoded.id });
+
+    if (!user) {
+      return res.status(403).json({ message: "invalid token" });
+    }
     req.user = user;
+
     next();
+    //
   } catch (err) {
-    return res.status(400).json({ message: "unAuthorized user" });
+    //
+    res.status(500).json({ message: err.message });
   }
 };
 

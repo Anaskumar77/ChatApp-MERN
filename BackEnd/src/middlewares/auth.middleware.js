@@ -11,23 +11,12 @@ import jwt from "jsonwebtoken";
 //
 
 export const authCheck = async (req, res) => {
-  const authToken = req.cookies.authToken;
-
-  if (!authToken) {
-    return res.status(401).json({ message: "unauthorized : no token" });
-  }
   try {
-    const decoded = jwt.verify(authToken, process.env.JWT_SECRET_KEY);
-    const user = await User.findOne({ _id: decoded.id });
-
-    if (!user) {
-      return res.status(403).json({ message: "invalid token" });
-    }
-    return res.status(200).json(user);
     //
+    res.status(200).json(req.user);
   } catch (err) {
     //
-    return res.json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
@@ -50,11 +39,11 @@ export const signup = async (req, res) => {
 
     GenerateToken(createdUser._id, res);
 
-    return res.json(createdUser);
+    res.json(createdUser);
     //
   } catch (err) {
     //
-    return res.json({
+    res.json({
       message: `error in new user creaion \n ${err.message}`,
     });
   }
@@ -73,21 +62,21 @@ export const login = async (req, res) => {
     bcrypt.compare(password, fetched_user.password).then((isMatch) => {
       if (isMatch) {
         GenerateToken(fetched_user._id, res);
-        return res.json(fetched_user);
+        res.json(fetched_user);
       } else {
         return res.json({ message: "password is incurrect" });
       }
     });
   } catch (err) {
     console.log(err);
-    return res.json({ message: `login failed ${err.message}` });
+    res.json({ message: `login failed ${err.message}` });
   }
 };
 
 export const logout = async (req, res) => {
   try {
-    return res.cookie("token", "", { maxAge: 0 });
+    res.cookie("token", "", { maxAge: 0 });
   } catch (err) {
-    return res.status(500).json({ message: `logout failed ${err.message}` });
+    res.status(500).json({ message: `logout failed ${err.message}` });
   }
 };

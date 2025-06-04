@@ -21,6 +21,7 @@ const AuthStore = create((set, get) => ({
     //
 
     const { authUser } = get();
+    console.log(get().socket?.connected);
     if (!authUser || get().socket?.connected) return;
 
     console.log("authUser._id :", authUser._id, "from AuthStore/connectSocket");
@@ -34,6 +35,7 @@ const AuthStore = create((set, get) => ({
     socket.connect();
 
     set({ socket: socket });
+    console.log(socket);
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });

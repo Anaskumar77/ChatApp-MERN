@@ -7,10 +7,10 @@ const socketHandler = (socket) => {
     //
     //
   });
-  socket.on("send_message", async () => {
+  socket.on("chat message", async () => {
     //
     //
-    //sending message logic
+    // receiveing message logic
     //
     //
   });
