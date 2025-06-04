@@ -1,5 +1,6 @@
 * {
   overflow: scroll;
+  box-sizing: border-box;
 }
 #chat_room_container {
   width: 45dvw;
@@ -21,14 +22,43 @@
 #ch_h_pfp_div {
   height: 100%;
   aspect-ratio: 1 /1;
+  background-color: darkgrey;
 }
 #ch_h_name_lastSeen_div {
   height: 100%;
+  background-color: burlywood;
+  flex: 1;
 }
 #ch_h_options_div {
   height: 100%;
-  aspect-ratio: 3/1;
+  aspect-ratio: 4/1;
+  /* background-color: beige; */
+
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
 }
+.ch_h_option {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  background-color: rgba(255, 255, 255, 0.217);
+}
+#CallIcon,
+#SearchIcon,
+#MoreHorizoIcon,
+#AccountBoxSharpIcon,
+#AddIcon,
+#SendIcon {
+  color: white;
+}
+/* #SearchIcon {
+}
+#MoreHorizoIcon {
+} */
 
 #ch_main_div {
   flex: 1;
@@ -61,7 +91,6 @@
   height: 46px;
   width: 46px;
   border-radius: 23px;
-  background-color: rgba(255, 255, 255, 0.534);
 }
 #ch_f_input {
   flex: 1;
@@ -75,8 +104,15 @@
 #ch_f_input:focus {
   outline: none;
 }
+#ch_f_input::placeholder {
+  color: white;
+}
 #ch_f_sendButton {
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: blueviolet;
+}
+#ch_f_sendButton:hover {
+  background-color: rgba(137, 43, 226, 0.743);
 }

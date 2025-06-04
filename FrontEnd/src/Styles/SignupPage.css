@@ -42,6 +42,7 @@
   background-color: rgb(255, 255, 255);
   height: 40px;
   width: 70%;
+  color: black;
   margin-top: var(--margin);
   border: none;
   font-size: medium;

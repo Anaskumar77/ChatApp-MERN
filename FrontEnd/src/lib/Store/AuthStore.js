@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { io } from "socket.io-client";
-import HandleClientSockets from "../HandleClientSockets.js";
+import { useLocation } from "react-router-dom";
 const BASE_URL = "http://localhost:7000/";
 
 const AuthStore = create((set, get) => ({
@@ -19,9 +19,11 @@ const AuthStore = create((set, get) => ({
 
   connectSocket: () => {
     //
+
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
 
+    console.log("authUser._id :", authUser._id, "from AuthStore/connectSocket");
     const socket = io("http://localhost:7000/", {
       query: {
         userId: authUser._id,
@@ -32,7 +34,13 @@ const AuthStore = create((set, get) => ({
     socket.connect();
 
     set({ socket: socket });
-    HandleClientSockets(socket);
+
+    socket.on("getOnlineUsers", (userIds) => {
+      set({ onlineUsers: userIds });
+      console.log(get().onlineUsers);
+    });
+
+    //
   },
 
   //
@@ -44,8 +52,9 @@ const AuthStore = create((set, get) => ({
 
   //
 
-  authCheck: async (navigate) => {
+  authCheck: async (navigate, location) => {
     //
+    if (["/login", "signup"].includes(location.pathname)) return;
     set({ isLoggingIn: true });
     console.log("authCheck started");
 
@@ -55,11 +64,12 @@ const AuthStore = create((set, get) => ({
       });
 
       console.log(res);
+
       if (res.status === 200) {
-        console.log("1");
         set({ authUser: res.data });
         get().connectSocket();
-        console.log("2");
+
+        console.log(get().authUser);
       } else {
         console.log("Non-200 status:", res.status);
         navigate("/login");

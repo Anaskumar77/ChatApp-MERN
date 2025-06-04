@@ -1,27 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import ScrollableTabsButtonPrevent from "./TabDiv.jsx";
 import "../Styles/RecentChatBar.css";
+import ChatStore from "../lib/Store/ChatStore.js";
+import AuthStore from "../lib/Store/AuthStore.js";
 const RecentChatBar = () => {
   //
-  const [recentMessages, setRecentMessages] = useState([
-    0, 1, 2, 3, 4,
+  const [recentMessages, setRecentMessages] = useState([]);
 
-    5, 6, 7, 8, 9,
-  ]);
+  const getUsers = ChatStore((state) => state.getUsers);
+  const selectedUser = ChatStore((state) => state.selectedUser);
+  const recentUsers = ChatStore((state) => state.recentUsers);
+  const setSelectedUser = ChatStore((state) => state.setSelectedUser);
+  const onlineUsers = AuthStore((state) => state.onlineUsers);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    getUsers();
+  }, []);
+  useEffect(() => {
+    console.log(onlineUsers);
+  }, [onlineUsers]);
+  const RecentMessageClick = (user) => {
+    setSelectedUser(user);
+    // get messages logic\
+  };
 
   //
-  //
-  // fetch recent Chats logic
 
-  const MessagePreviewDiv = (chatInfo) => {
+  const MessagePreviewDiv = ({ chatInfo }) => {
+    console.log(chatInfo);
     return (
-      <div className="messagePreviewDiv">
+      <div
+        onClick={RecentMessageClick(chatInfo._id)}
+        className="messagePreviewDiv"
+      >
         <div className="mp_avatarDiv">
           <div></div>
         </div>
         <div className="mp_subDiv">
           <div className="mp_name_time_div">
-            <h5>Name</h5>
+            <h5>{chatInfo.name}</h5>
             <h6>time</h6>
           </div>
           <div className="mp_message_div">
@@ -42,7 +62,7 @@ const RecentChatBar = () => {
       </div>
       <h2>Chats</h2>
       <div id="ChatBar_RecentMessages">
-        {recentMessages.map((chat) => {
+        {recentUsers.map((chat) => {
           return <MessagePreviewDiv chatInfo={chat} />;
         })}
       </div>

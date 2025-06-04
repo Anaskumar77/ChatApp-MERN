@@ -5,8 +5,9 @@
 }
 
 #r_chatbar_container {
-  background-color: #537d5d;
+  background-color: #262626;
   height: 100dvh;
+  overflow-y: hidden;
   /* width: 300px; */
 }
 #ChatBar_search_div {
@@ -15,7 +16,7 @@
   padding: 12px;
   align-items: center;
   justify-content: center;
-  background-color: #73946b;
+  background-color: #2b2c2b;
 }
 #ChatBar_search_div input {
   background-color: #ffffff61;
@@ -78,7 +79,7 @@
   grid-template-rows: 1, 1;
 }
 .mp_name_time_div {
-  background-color: beige;
+  background-color: rgb(0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -89,7 +90,7 @@
 }
 
 .mp_message_div {
-  background-color: azure;
+  background-color: rgb(0, 0, 0);
   align-content: center;
 }
 .mp_message_div h6 {

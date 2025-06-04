@@ -3,15 +3,22 @@ import SignUpPage from "./Pages/Signup.jsx";
 import LoginPage from "./Pages/Login.jsx";
 import HomePage from "./Pages/HomePage.jsx";
 import AuthStore from "./lib/Store/AuthStore.js";
-import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import "./Styles/App.css";
 
 const App = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const authCheck = AuthStore((state) => state.authCheck);
 
   useEffect(() => {
-    authCheck(navigate);
+    authCheck(navigate, location);
     // console.log(onlineUsers);
   }, []);
 
