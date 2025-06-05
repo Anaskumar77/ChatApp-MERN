@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
 import ChatStore from "../lib/Store/ChatStore";
 
-const SearchWindow = () => {
+const AddRoomDiv = () => {
   //
 
   const getSearchedUsers = ChatStore((s) => s.getSearchedUsers);
@@ -17,10 +17,9 @@ const SearchWindow = () => {
     const input = inputText.trim();
 
     if (input === "") return;
+    getSearchedUsers(input, fetch_limit);
 
-    const res = getSearchedUsers(input, fetch_limit);
-
-    setUsers(res);
+    setUsers([{ name: "Anas" }, { name: "ajith" }]);
     //
   }, [inputText]);
 
@@ -40,19 +39,19 @@ const SearchWindow = () => {
   };
 
   return (
-    <div id="searchWindowContainer">
-      <div id="sw_search_div">
+    <div id="AddRoomContainer">
+      <div id="ar_search_div">
         <input
           onChange={(e) => setInputText(e.target.value)}
           type="text"
           placeholder="select contacts"
         ></input>
       </div>
-      <div id="sw_newGroup_div">
+      <div id="ar_newGroup_div">
         <ForumIcon />
         <h4>New Group</h4>
       </div>
-      <div id="sw_usersList_div">
+      <div id="ar_usersList_div">
         {users.map((items) => {
           return <IndividualUser info={items} />;
         })}
@@ -61,4 +60,4 @@ const SearchWindow = () => {
   );
 };
 
-export default SearchWindow;
+export default AddRoomDiv;

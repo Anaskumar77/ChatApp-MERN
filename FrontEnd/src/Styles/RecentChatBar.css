@@ -9,6 +9,7 @@
   height: 100dvh;
   overflow-y: hidden;
   /* width: 300px; */
+  position: relative;
 }
 #ChatBar_search_div {
   height: 65px;
@@ -43,6 +44,7 @@
   overflow-y: auto;
   height: 100vh;
   /* height:; */
+  position: relative;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -94,4 +96,17 @@
   align-content: center;
 }
 .mp_message_div h6 {
+}
+
+#r_cb_floating_button {
+  position: absolute;
+  right: 25px;
+  bottom: 156px;
+  width: 60px;
+  aspect-ratio: 1/1;
+  border-radius: 10px;
+  background-color: rgb(128, 255, 0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

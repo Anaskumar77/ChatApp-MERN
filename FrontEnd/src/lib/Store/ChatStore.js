@@ -18,6 +18,7 @@ import axios from "axios";
 const ChatStore = create((set, get) => ({
   messages: [],
   recentUsers: [],
+  searchedUsers: [],
   selectedUser: null,
   isUsersLoading: false,
   isMessagesLoading: false,
