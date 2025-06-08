@@ -14,6 +14,7 @@
 
 import { create } from "zustand";
 import axios from "axios";
+import debounce from "lodash.debounce"; // create as function delay
 
 const ChatStore = create((set, get) => ({
   messages: [],
@@ -33,16 +34,20 @@ const ChatStore = create((set, get) => ({
     console.log("current tab : ", get().currentTab);
   },
 
-  getSearchedUsers: async (inputText, limit) => {
+  getSearchedUsers: debounce(async ({ input, fetch_limit }) => {
     try {
       const res = await axios.get(
-        `http://localhost:7000/api/message/searchUsers/:${inputText}/:${limit}`
+        `http://localhost:7000/api/message/search?input=${input}&limit=${fetch_limit}`,
+        {
+          withCredentials: true,
+        }
       );
-      console.log(res);
+      console.log(res.data);
     } catch (err) {
-      console.error("getSearchedUsers error : ", err.messages);
+      console.error("getSearchedUsers error : ", err.message);
     }
-  },
+  }, 300),
+  //
 
   getUsers: async () => {
     try {
@@ -50,11 +55,10 @@ const ChatStore = create((set, get) => ({
         withCredentials: true,
       });
 
-      console.log(res);
+      console.log(res.data);
 
       if (res.status === 200) {
         set({ recentUsers: res.data });
-        console.log(res.data);
       } else {
         console.log(res);
       }

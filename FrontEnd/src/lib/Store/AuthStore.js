@@ -21,17 +21,14 @@ const AuthStore = create((set, get) => ({
     //
 
     const { authUser } = get();
-    console.log(get().socket?.connected);
     if (!authUser || get().socket?.connected) return;
 
-    console.log("authUser._id :", authUser._id, "from AuthStore/connectSocket");
     const socket = io("http://localhost:7000/", {
       query: {
         userId: authUser._id,
       },
     });
 
-    console.log("socket is connecting");
     socket.connect();
 
     set({ socket: socket });
@@ -39,7 +36,6 @@ const AuthStore = create((set, get) => ({
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds });
-      console.log(get().onlineUsers);
     });
 
     //

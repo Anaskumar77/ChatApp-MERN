@@ -1,4 +1,4 @@
-GET http://localhost:7000/api/message/user
+GET http://localhost:7000/api/message/searchUsers
 Content-Type: application/json
 
 

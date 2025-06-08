@@ -2,16 +2,29 @@ import MessageModel from "../Models/messageModel.js";
 import RoomModel from "../Models/roomModel.js";
 import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
-//
-export const sendSearchedUsers = (req, res) => {
-  //
-  // get limited user
 
-  return res.status(200).json({ message: " go work in it" });
+export const searchUsers = async (req, res) => {
+  const { input, limit } = req.query;
+
+  if (!input || !limit) return res.json({ message: "no query" });
+
+  try {
+    const users = await UserModel.find({
+      name: { $regex: input, $options: "i" },
+    }).limit(Number(limit));
+
+    console.log(users);
+
+    return res.json(users);
+  } catch (err) {
+    console.log(err.message);
+  }
 };
+
 export const fetchLatestChats = async (req, res) => {
   //
   const userId = req.user._id; // only exists if it has authorized
+  console.log("latest users");
   try {
     //
     const recentChats = await RoomModel.find({
@@ -52,6 +65,11 @@ export const sendMessages = (req, res) => {
   if (receiverSocketId) io.to(receiverSocketId).emit("message");
 
   //
+};
+
+export const Anjali = async (req, res) => {
+  res.json({ message: "yee" });
+  console.log("anjali");
 };
 
 // export const

@@ -14,6 +14,8 @@ export const authCheck = async (req, res) => {
   try {
     //
     res.status(200).json(req.user);
+    console.log("AuthCheck happend");
+    //
   } catch (err) {
     //
     res.status(500).json({ message: err.message });

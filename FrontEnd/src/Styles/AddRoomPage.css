@@ -1,0 +1,37 @@
+#AddRoom_page {
+  /*  */
+  --gap: 10px;
+
+  width: 100dvw;
+  height: 100dvh;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1); /* Semi-transparent */
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37); /* Depth */
+  backdrop-filter: blur(2px); /* 🧊 Frost effect */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.18); /* Glass edge */
+}
+#AddRoomContainer {
+  width: 400px;
+  height: calc(100dvh - (var(--gap) * 4));
+  background-color: rgb(0, 0, 0);
+  border-radius: var(--gap);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: baseline;
+}
+#ar_search_div {
+  width: calc(100% - (var(--gap) * 2));
+  background-color: rgb(22, 22, 22);
+  height: 45px;
+}
+#ar_newGroup_div {
+  width: calc(100% - (var(--gap) * 2));
+  height: 45px;
+  background-color: rgb(41, 41, 41);
+  display: flex;
+}

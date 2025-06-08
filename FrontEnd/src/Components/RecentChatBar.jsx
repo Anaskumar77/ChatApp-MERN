@@ -10,7 +10,6 @@ import AddIcon from "@mui/icons-material/Add";
 
 export const MessagePreviewDiv = ({ chatInfo }) => {
   const setSelectedUser = ChatStore((state) => state.setSelectedUser);
-
   const RecentMessageClick = (user) => {
     //
     setSelectedUser(user);
@@ -90,7 +89,9 @@ const RecentChatBar = () => {
             </div>
           </div>
         </div>
-        {isAddRoomButtonOn ? <AddRoomDiv /> : null}
+        {isAddRoomButtonOn ? (
+          <AddRoomDiv setIsRoomOpen={setIsAddRoomButtonOn} />
+        ) : null}
       </>
     );
   };

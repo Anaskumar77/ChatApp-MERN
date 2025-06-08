@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./lib/DBConnect.js";
 import authRoutes from "./Routes/AuthRoutes.js";
 import messageRoutes from "./Routes/MessageRoutes.js";
+import searchRoutes from "./Routes/searchRoutes.js";
 import Authorization from "./middlewares/Authorization.js";
 import { server, app } from "./Socket.js";
 import cors from "cors";
@@ -25,8 +26,10 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "CORS is working!" });
 });
 
-app.use("/api/auth/", authRoutes);
-app.use("/api/message/", messageRoutes);
+app.use("/api/auth", authRoutes);
+app.use("/api/message", messageRoutes);
+app.use("/api/search", searchRoutes);
+console.log("ROUTES LOADED");
 
 server.listen(process.env.PORT, () => {
   const connection = connectDB();
