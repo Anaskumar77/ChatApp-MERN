@@ -2,7 +2,7 @@ import React from "react";
 import SideBar from "../Components/SideBar.jsx";
 import RecentChatBar from "../Components/RecentChatBar.jsx";
 import ChatRoom from "../Components/ChatRoom.jsx";
-
+import Profile from "../Components/Profile.jsx";
 //
 
 const HomePage = () => {
@@ -21,6 +21,7 @@ const HomePage = () => {
       <SideBar />
       <RecentChatBar />
       <ChatRoom />
+      <Profile />
     </div>
   );
 };

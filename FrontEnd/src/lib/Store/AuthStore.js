@@ -52,7 +52,7 @@ const AuthStore = create((set, get) => ({
 
   authCheck: async (navigate, location) => {
     //
-    if (["/login", "signup"].includes(location.pathname)) return;
+    if (["/login", "/signup"].includes(location.pathname)) return;
     set({ isLoggingIn: true });
     console.log("authCheck started");
 

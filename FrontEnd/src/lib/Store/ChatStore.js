@@ -22,6 +22,7 @@ const ChatStore = create((set, get) => ({
   searchedUsers: [],
   selectedUser: null,
   isUsersLoading: false,
+  isImageUploading: false,
   isMessagesLoading: false,
   currentTab: "Online",
 
@@ -33,6 +34,9 @@ const ChatStore = create((set, get) => ({
     set({ currentTab: tabName });
     console.log("current tab : ", get().currentTab);
   },
+  setSearchedUsers: (data) => {
+    set({ searchedUsers: data });
+  },
 
   getSearchedUsers: debounce(async ({ input, fetch_limit }) => {
     try {
@@ -42,6 +46,7 @@ const ChatStore = create((set, get) => ({
           withCredentials: true,
         }
       );
+      set({ searchedUsers: res.data });
       console.log(res.data);
     } catch (err) {
       console.error("getSearchedUsers error : ", err.message);
@@ -66,13 +71,83 @@ const ChatStore = create((set, get) => ({
       console.error(err.message);
     }
   },
+
+  //------------------------------------------------------------------------------
+
+  createRoom: async (users, isGroup) => {
+    // users = list
+
+    try {
+      const res = await axios.post(
+        `http://localhost:7000/api/message/create/${
+          isGroup ? "group" : "private"
+        }`,
+        users,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status == 201) {
+        console.log(res.data);
+        console.log(res);
+        set({ selectedUser: res.data });
+
+        // response have room id and users
+
+        return;
+      } else {
+        console.log(res);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
+
+  //------------------------------------------------------------------------------
+
   getChats: async () => {
     //
     const receiverId = get().selectedUser;
+    console.log("receiver id", receiverId);
     try {
-      const res = axios.get(`http://localhost:7000/api/message/:${receiverId}`);
+      const res = axios.get(
+        `http://localhost:7000/api/message/chats/:${receiverId}`
+      );
 
+      console.log(res);
       // response logic
+      //
+    } catch (err) {
+      //
+      console.error(err.message);
+    }
+  },
+
+  //------------------------------------------------------------------------------
+
+  imageUpload: async (file) => {
+    //
+    set({ isImageUploading: true });
+
+    try {
+      //
+      const res = await axios.post(
+        "http://localhost:7000/api/auth/profileUpdate",
+        {
+          profilPic: file,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === !201) {
+        console.log(res);
+      } else {
+        console.log(res.data);
+      }
+
+      set({ isImageUploading: false });
       //
     } catch (err) {
       //

@@ -7,9 +7,15 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
   //
 
   const getSearchedUsers = ChatStore((s) => s.getSearchedUsers);
-
+  const searchedUsers = ChatStore((s) => s.searchedUsers);
+  const setSearchedUsers = ChatStore((s) => s.setSearchedUsers);
+  const setSelectedUser = ChatStore((s) => s.setSelectedUser);
+  const getChats = ChatStore((s) => s.getChats);
+  const createRoom = ChatStore((s) => s.createRoom);
+  //
   const [inputText, setInputText] = useState("");
-  const [users, setUsers] = useState([]);
+  const [selectedGroupMembers, setSelectedGroupMembers] = useState([]);
+  const [isGroupOn, setIsGroupOn] = useState(false);
   const fetch_limit = 20;
 
   useCallback(getSearchedUsers, [getSearchedUsers]);
@@ -20,23 +26,43 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
     getSearchedUsers({ input, fetch_limit });
   }, [inputText, getSearchedUsers]);
 
-  // useEffect(() => {
-  //   const input = inputText.trim();
-  //   if (input === "") return;
+  //====================================================================
 
-  //   setUsers([{ name: "Anas" }, { name: "ajith" }]);
-  // }, [inputText]);
+  const HandleCreateRoomSubmit = (isGroupOn) => {
+    createRoom(selectedGroupMembers, isGroupOn);
+  };
 
-  const IndividualUser = (items) => {
+  const IndividualUser = ({ info }) => {
     return (
-      <div id="iu_container">
-        <div id="iu_pfp_div">
+      <div
+        onClick={() => {
+          if (isGroupOn) {
+            if (selectedGroupMembers.includes(info._id)) {
+              setSelectedGroupMembers(
+                selectedGroupMembers.filter((id) => id != info._id)
+              );
+            } else {
+              setSelectedGroupMembers((prev) => [...prev, info._id]);
+            }
+          } else {
+            HandleCreateRoomSubmit(isGroupOn);
+          }
+        }}
+        id="iu_container"
+        className={
+          selectedGroupMembers.includes(info._id)
+            ? "iu_container_selected"
+            : "iu_container_unselected"
+        }
+      >
+        <div id="iu_pfp_div ">
           <div id="iu_pfp_circle">
             <img></img>
           </div>
         </div>
         <div id="iu_name_div">
-          <h3>{items.name}</h3>
+          <h3>{info.name}</h3>
+          <h6>{info._id}</h6>
         </div>
       </div>
     );
@@ -44,9 +70,13 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
 
   return (
     <div
-      onClick={(e) =>
-        e.target.id === "AddRoom_page" ? setIsRoomOpen(false) : null
-      }
+      onClick={(e) => {
+        if (e.target.id === "AddRoom_page") {
+          setIsRoomOpen(false);
+          setSearchedUsers([]);
+          setSelectedGroupMembers([]);
+        }
+      }}
       id="AddRoom_page"
     >
       <div id="AddRoomContainer">
@@ -60,15 +90,28 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
             id="add_room_searchbar"
           ></input>
         </div>
-        <div id="ar_newGroup_div">
+        <div
+          id="ar_newGroup_div"
+          onClick={() => {
+            setIsGroupOn((prev) => !prev);
+          }}
+        >
           <ForumIcon />
           <h4>New Group</h4>
         </div>
         <div id="ar_usersList_div">
-          {users.map((items) => {
-            return <IndividualUser info={items} />;
-          })}
+          {searchedUsers
+            .filter((user) => user != null)
+            .map((items) => {
+              return <IndividualUser key={items._id} info={items} />;
+            })}
         </div>
+        <button
+          id={isGroupOn ? "addRoomButton_visible" : "addRoomButton_invisible"}
+          onClick={() => HandleCreateRoomSubmit(isGroupOn)}
+        >
+          {"->"}
+        </button>
       </div>
     </div>
   );
