@@ -4,11 +4,13 @@ import UserModel from "../Models/userModel.js";
 import GenerateToken from "../lib/GenerateToken.js";
 import User from "../Models/userModel.js";
 import jwt from "jsonwebtoken";
-
+import cloudinary from "../lib/CloudinaryConfig.js";
 //
 // if token in cookie, atomaticaly send with req by allowing withCredentials: true ,
 //if token stored in localStorage/session storage  ,manually add it in header , use bearer
 //
+
+////////////////////////////////////////////////////////////////////////
 
 export const authCheck = async (req, res) => {
   try {
@@ -21,6 +23,8 @@ export const authCheck = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+///////////////////////////////////////////////////////////////////////////
 
 export const signup = async (req, res) => {
   //
@@ -51,6 +55,8 @@ export const signup = async (req, res) => {
   }
 };
 
+////////////////////////////////////////////////////////////////////////
+
 export const login = async (req, res) => {
   //
   const { email, password } = req.body;
@@ -75,10 +81,40 @@ export const login = async (req, res) => {
   }
 };
 
+//////////////////////////////////////////////////////////////////////////
+
 export const logout = async (req, res) => {
   try {
     res.cookie("token", "", { maxAge: 0 });
   } catch (err) {
     res.status(500).json({ message: `logout failed ${err.message}` });
+  }
+};
+
+////////////////////////////////////////////////////////////////////////////
+
+export const profileUpdate = async (req, res) => {
+  const userId = req.body._id;
+
+  const { profilePic } = req.body;
+
+  if (!profilePic) return res.json({ message: "profilepic is missing" });
+
+  try {
+    const res_url = await cloudinary.uploader.upload(profilePic);
+
+    if (!res_url) return res.json({ message: "cloudinary not reponded" });
+
+    const DB_response = await UserModel.findByIdAndUpdate(
+      { _id: userId },
+      { avatar: res_url }
+    );
+
+    return res.status(201).json(DB_response);
+    //
+  } catch (err) {
+    console.log(err.message);
+
+    return res.status(500).json({ message: err.message });
   }
 };

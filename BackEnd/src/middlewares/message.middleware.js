@@ -13,8 +13,6 @@ export const searchUsers = async (req, res) => {
       name: { $regex: input, $options: "i" },
     }).limit(Number(limit));
 
-    console.log(users);
-
     return res.json(users);
   } catch (err) {
     console.log(err.message);
