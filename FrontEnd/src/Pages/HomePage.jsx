@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SideBar from "../Components/SideBar.jsx";
 import RecentChatBar from "../Components/RecentChatBar.jsx";
 import ChatRoom from "../Components/ChatRoom.jsx";
 import Profile from "../Components/Profile.jsx";
+import ChatStore from "../lib/Store/ChatStore.js";
 //
 
 const HomePage = () => {
+  const getAllRoom = ChatStore((s) => s.getAllRoom);
+
+  useEffect(() => {
+    getAllRoom();
+  }, []);
   return (
     <div
       style={{

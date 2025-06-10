@@ -6,13 +6,15 @@ import {
   searchUsers,
   createGroup,
   createPrivate,
+  fetchOnlineChats,
 } from "../middlewares/message.middleware.js";
 import Authorization from "../middlewares/Authorization.js";
 const router = express.Router();
 // this all have user info in req part
 
 router.get("/search", Authorization, searchUsers);
-router.get("/user", Authorization, fetchLatestChats);
+router.get("/user/all", Authorization, fetchLatestChats);
+router.get("/user/online", Authorization, fetchOnlineChats);
 router.get("/chats/:id", Authorization, fetchChatMessages);
 router.get("/send/:id", Authorization, sendMessages);
 router.post("/create/group", Authorization, createGroup);

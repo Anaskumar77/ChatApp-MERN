@@ -4,6 +4,7 @@ import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
 
 //=================================================================
+// Create Group and respond with RoomModel response
 
 export const createGroup = async (req, res) => {
   const userId = req.user._id;
@@ -28,12 +29,14 @@ export const createGroup = async (req, res) => {
       return res.status(500).josn({ message: "failed creating room model" });
     }
   } catch (err) {
+    b;
     console.log(err.message);
     return res.json({ message: err.message });
   }
 };
 
 //===============================================================
+// creating private chat and respond with RoomModel reposnse
 
 export const createPrivate = async (req, res) => {
   const receiverIdList = req.body;
@@ -80,6 +83,7 @@ export const createPrivate = async (req, res) => {
 };
 
 //===============================================================
+// for searching users in global level
 
 export const searchUsers = async (req, res) => {
   const { input, limit } = req.query;
@@ -97,32 +101,11 @@ export const searchUsers = async (req, res) => {
   }
 };
 
-//=================================================================
-
-export const fetchLatestChats = async (req, res) => {
-  //
-  const userId = req.user._id; // only exists if it has authorized
-
-  console.log("latest users");
-  try {
-    //
-    const recentChats = await RoomModel.find({
-      $or: [{ users: userId }, { admin: userId }],
-    });
-
-    if (recentChats) return res.status(200).json(recentChats);
-
-    //
-  } catch (err) {
-    console.log(err.message);
-    return res.json({ message: err.message });
-  }
-};
-
 //====================================================================
 
 export const fetchChatMessages = (req, res) => {
-  //
+  //  For getting all messages of a specific room
+
   const userId = req.user._id;
 
   const { receiverId } = req.params;
@@ -140,7 +123,56 @@ export const fetchChatMessages = (req, res) => {
   //
 };
 
+//=================================================================
+// For tab-All
+
+export const fetchLatestChats = async (req, res) => {
+  //
+  const userId = req.user._id; // only exists if it has authorized
+
+  console.log("latest users\n\n\n\n\n\n");
+
+  try {
+    //
+    const recentChats = await RoomModel.find({
+      $or: [{ users: userId }, { admin: userId }],
+    })
+      .populate({
+        path: "lastMessage",
+        select: "content timestamp createdAt",
+        populate: {
+          path: "sender",
+          select: "name",
+        },
+      })
+      .lean();
+
+    console.log(recentChats);
+
+    if (recentChats) return res.status(200).json(recentChats);
+
+    //
+  } catch (err) {
+    console.log(err.message);
+    return res.json({ message: err.message });
+  }
+};
+
 //======================================================================
+// For Tab online
+
+export const fetchOnlineChats = (req, res) => {
+  const userId = req.user._id;
+
+  //fetch online users
+  try {
+    console.log("fatch online chats");
+  } catch (err) {
+    console.log(err.message);
+  }
+};
+
+//=====================================================================
 
 export const sendMessages = (req, res) => {
   //

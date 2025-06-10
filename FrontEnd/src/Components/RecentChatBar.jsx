@@ -40,7 +40,7 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
 const RecentChatBar = () => {
   //
 
-  const getUsers = ChatStore((state) => state.getUsers);
+  // const getUsers = ChatStore((state) => state.getUsers);
   // const selectedUser = ChatStore((state) => state.selectedUser);
   const recentUsers = ChatStore((state) => state.recentUsers);
   // const setSelectedUser = ChatStore((state) => state.setSelectedUser);
@@ -52,10 +52,10 @@ const RecentChatBar = () => {
 
   // const navigate = useNavigate();
 
-  useEffect(() => {
-    //
-    getUsers();
-  }, []);
+  // useEffect(() => {
+  //   //
+  //   getUsers();
+  // }, []);
 
   useEffect(() => {
     //

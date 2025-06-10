@@ -15,7 +15,8 @@ const ChatStore = create((set, get) => ({
   OnlineChats: [],
   PrivateChats: [],
   GroupChats: [],
-  //
+
+  //=================================================================================
 
   setSelectedUser: (user) => {
     set({ selectedUser: user });
@@ -28,6 +29,8 @@ const ChatStore = create((set, get) => ({
   setSearchedUsers: (data) => {
     set({ searchedUsers: data });
   },
+
+  //=================================================================================
 
   getSearchedUsers: debounce(async ({ input, fetch_limit }) => {
     //
@@ -47,18 +50,21 @@ const ChatStore = create((set, get) => ({
       console.error("getSearchedUsers error : ", err.message);
     }
   }, 300),
-  //
 
-  getUsers: async () => {
+  //=================================================================================
+
+  getAllRoom: async () => {
     try {
-      const res = await axios.get("http://localhost:7000/api/message/user", {
-        withCredentials: true,
-      });
-
-      console.log(res.data);
+      const res = await axios.get(
+        "http://localhost:7000/api/message/user/all",
+        {
+          withCredentials: true,
+        }
+      );
+      console.log("get all room", res);
 
       if (res.status === 200) {
-        set({ recentUsers: res.data });
+        set({ AllChats: res.data });
       } else {
         console.log(res);
       }
@@ -67,7 +73,30 @@ const ChatStore = create((set, get) => ({
     }
   },
 
-  //------------------------------------------------------------------------------
+  //=================================================================================
+
+  getOnlineRoom: async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:7000/api/message/user/online",
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("yeeeeeee", res.data);
+
+      if (res.status === 200) {
+        set({ OnlineChats: res.data });
+      } else {
+        console.log(res);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
+
+  //=================================================================================
 
   createRoom: async (users, isGroup) => {
     // users = list
@@ -102,7 +131,6 @@ const ChatStore = create((set, get) => ({
   getChats: async () => {
     //
     const receiverId = get().selectedUser;
-    console.log("receiver id", receiverId);
     try {
       const res = axios.get(
         `http://localhost:7000/api/message/chats/:${receiverId}`
