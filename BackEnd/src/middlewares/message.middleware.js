@@ -3,6 +3,84 @@ import RoomModel from "../Models/roomModel.js";
 import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
 
+//=================================================================
+
+export const createGroup = async (req, res) => {
+  const userId = req.user._id;
+  const usersList = req.body;
+
+  if (!userId || !usersList)
+    return res.json({ message: "please provide users list" });
+
+  try {
+    const newRoomModel = new RoomModel({
+      name: "untitled",
+      isGroup: true,
+      users: [...usersList, userId],
+      admin: [userId],
+    });
+    const createdRoom = await newRoomModel.save();
+
+    if (createdRoom) {
+      console.log(createdRoom);
+      return res.status(201).json(createdRoom);
+    } else {
+      return res.status(500).josn({ message: "failed creating room model" });
+    }
+  } catch (err) {
+    console.log(err.message);
+    return res.json({ message: err.message });
+  }
+};
+
+//===============================================================
+
+export const createPrivate = async (req, res) => {
+  const receiverIdList = req.body;
+  const userId = req.user._id;
+
+  const receiverId = receiverIdList[0]; //accessing the only element
+
+  if (!userId || !receiverId)
+    return res.json({ message: "please provide users List" });
+
+  try {
+    const receiverInfo = await UserModel.findById({ _id: receiverId });
+
+    if (!receiverInfo) return res.json({ message: "cannot find receiver" });
+
+    // checking is there a room exist already
+    const isAnyRoomFind = await RoomModel.findOne({
+      isGroup: false,
+      admin: { $all: [userId, receiverId] },
+    });
+
+    //if any room exist ? then return room : else create new one
+    if (isAnyRoomFind) return res.status(200).json(isAnyRoomFind);
+
+    const newPrivateRoom = new RoomModel({
+      name: receiverInfo.name,
+      isGroup: false,
+      users: [...receiverIdList, userId],
+      admin: [...receiverIdList, userId],
+      Group_avatar: receiverInfo.avatar,
+    });
+
+    const newRoomRes = await newPrivateRoom.save();
+
+    if (newRoomRes) return res.status(201).json(newRoomRes);
+    //
+  } catch (err) {
+    //
+    console.log(err.message);
+    return res
+      .status(500)
+      .json({ message: "failed to create private room model" });
+  }
+};
+
+//===============================================================
+
 export const searchUsers = async (req, res) => {
   const { input, limit } = req.query;
 
@@ -19,9 +97,12 @@ export const searchUsers = async (req, res) => {
   }
 };
 
+//=================================================================
+
 export const fetchLatestChats = async (req, res) => {
   //
   const userId = req.user._id; // only exists if it has authorized
+
   console.log("latest users");
   try {
     //
@@ -38,9 +119,15 @@ export const fetchLatestChats = async (req, res) => {
   }
 };
 
+//====================================================================
+
 export const fetchChatMessages = (req, res) => {
   //
   const userId = req.user._id;
+
+  const { receiverId } = req.params;
+
+  if (!receiverId) return res.json({ message: "no receiver id" });
 
   //  get reciever id
 
@@ -53,6 +140,8 @@ export const fetchChatMessages = (req, res) => {
   //
 };
 
+//======================================================================
+
 export const sendMessages = (req, res) => {
   //
   //save it to the data base
@@ -64,6 +153,8 @@ export const sendMessages = (req, res) => {
 
   //
 };
+
+//========================================================================
 
 export const Anjali = async (req, res) => {
   res.json({ message: "yee" });

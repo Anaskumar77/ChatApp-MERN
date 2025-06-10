@@ -45,6 +45,7 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
               setSelectedGroupMembers((prev) => [...prev, info._id]);
             }
           } else {
+            setSelectedGroupMembers(() => [info._id]);
             HandleCreateRoomSubmit(isGroupOn);
           }
         }}

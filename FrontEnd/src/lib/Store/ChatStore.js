@@ -1,17 +1,3 @@
-// import AuthStore from "./AuthStore.js";
-
-// export const sendMessage = (message) => {
-//   const { socket, authUser } = AuthStore().getState();
-
-//   if (message.trim !== "") {
-//     const payload = {
-//       sender: authUser._id,
-//       // receiver:
-//     };
-//     socket.emit("chat message", payload);
-//   }
-// };
-
 import { create } from "zustand";
 import axios from "axios";
 import debounce from "lodash.debounce"; // create as function delay
@@ -25,6 +11,11 @@ const ChatStore = create((set, get) => ({
   isImageUploading: false,
   isMessagesLoading: false,
   currentTab: "Online",
+  AllChats: [],
+  OnlineChats: [],
+  PrivateChats: [],
+  GroupChats: [],
+  //
 
   setSelectedUser: (user) => {
     set({ selectedUser: user });
@@ -39,6 +30,10 @@ const ChatStore = create((set, get) => ({
   },
 
   getSearchedUsers: debounce(async ({ input, fetch_limit }) => {
+    //
+    /// remember to debug that it fetches including the user info also  !!!!!!!!!!!!!!!!
+    //
+
     try {
       const res = await axios.get(
         `http://localhost:7000/api/message/search?input=${input}&limit=${fetch_limit}`,
@@ -88,7 +83,6 @@ const ChatStore = create((set, get) => ({
         }
       );
       if (res.status == 201) {
-        console.log(res.data);
         console.log(res);
         set({ selectedUser: res.data });
 
