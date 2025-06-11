@@ -116,7 +116,6 @@ export const fetchChatMessages = (req, res) => {
 
   //  find messages with user and receiver are either sender or receiver in messageModel
   //
-
   //
   // grtting specific chat messages logic
   //
@@ -161,16 +160,16 @@ export const fetchLatestChats = async (req, res) => {
 //======================================================================
 // For Tab online
 
-export const fetchOnlineChats = (req, res) => {
-  const userId = req.user._id;
+// export const fetchOnlineChats = (req, res) => {
+//   const userId = req.user._id;
 
-  //fetch online users
-  try {
-    console.log("fatch online chats");
-  } catch (err) {
-    console.log(err.message);
-  }
-};
+//   //fetch online users
+//   try {
+//     console.log("fatch online chats");
+//   } catch (err) {
+//     console.log(err.message);
+//   }
+// };
 
 //=====================================================================
 

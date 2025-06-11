@@ -1,20 +1,18 @@
 import { create } from "zustand";
 import axios from "axios";
 import debounce from "lodash.debounce"; // create as function delay
-
+import AuthStore from "./AuthStore";
 const ChatStore = create((set, get) => ({
-  messages: [],
-  recentUsers: [],
   searchedUsers: [],
   selectedUser: null,
   isUsersLoading: false,
   isImageUploading: false,
   isMessagesLoading: false,
   currentTab: "Online",
-  AllChats: [],
+  AllChats: [], // dynamic
   OnlineChats: [],
-  PrivateChats: [],
-  GroupChats: [],
+  PrivateChats: [], // dynamic
+  GroupChats: [], // dynamic
 
   //=================================================================================
 
@@ -28,6 +26,10 @@ const ChatStore = create((set, get) => ({
   },
   setSearchedUsers: (data) => {
     set({ searchedUsers: data });
+  },
+
+  setOnlineState: () => {
+    const onlineUsers = AuthStore((s) => s.onlineUsers);
   },
 
   //=================================================================================

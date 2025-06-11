@@ -2,7 +2,7 @@ import React from "react";
 import ChatStore from "../lib/Store/ChatStore.js";
 import { MessagePreviewDiv } from "./RecentChatBar.jsx";
 const SearchOnDiv = () => {
-  const recentChats = ChatStore((s) => s.recentUsers);
+  const AllChats = ChatStore((s) => s.AllChats);
 
   return (
     <div
@@ -13,7 +13,7 @@ const SearchOnDiv = () => {
         <input type="text" placeholder="search chats"></input>
       </div>
       <div>
-        {recentChats.map((chat) => {
+        {AllChats.map((chat) => {
           return <MessagePreviewDiv chatInfo={chat} />;
         })}
       </div>

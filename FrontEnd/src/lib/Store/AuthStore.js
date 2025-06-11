@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { io } from "socket.io-client";
-import { useLocation } from "react-router-dom";
+
 const BASE_URL = "http://localhost:7000/";
 
 const AuthStore = create((set, get) => ({
@@ -35,7 +35,7 @@ const AuthStore = create((set, get) => ({
     console.log(socket);
 
     socket.on("getOnlineUsers", (userIds) => {
-      set({ onlineUsers: userIds });
+      set({ onlineUsers: userIds.filter((id) => id !== get().authUser._id) });
     });
 
     //

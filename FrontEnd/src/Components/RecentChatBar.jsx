@@ -5,7 +5,6 @@ import "../Styles/RecentChatBar.css";
 import ChatStore from "../lib/Store/ChatStore.js";
 import AuthStore from "../lib/Store/AuthStore.js";
 import AddRoomDiv from "./addRoomDiv.jsx";
-import SearchOnDiv from "./SearchOnDiv.jsx";
 import AddIcon from "@mui/icons-material/Add";
 
 export const MessagePreviewDiv = ({ chatInfo }) => {
@@ -14,6 +13,7 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
     //
     setSelectedUser(user);
     // get messages logic\
+    // console.log(chatInfo._id, " : ", chatInfo.users)/;
   };
 
   return (
@@ -27,7 +27,13 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
       <div className="mp_subDiv">
         <div className="mp_name_time_div">
           <h5>{chatInfo.name}</h5>
-          <h6>time</h6>
+          <h6>
+            {new Date(chatInfo.updatedAt).toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              // second: "2-digit",   // uncammand this if you want seconds alse
+            })}
+          </h6>
         </div>
         <div className="mp_message_div">
           <h6>recent message</h6>
@@ -40,27 +46,15 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
 const RecentChatBar = () => {
   //
 
-  // const getUsers = ChatStore((state) => state.getUsers);
-  // const selectedUser = ChatStore((state) => state.selectedUser);
-  const recentUsers = ChatStore((state) => state.recentUsers);
-  // const setSelectedUser = ChatStore((state) => state.setSelectedUser);
-  const onlineUsers = AuthStore((state) => state.onlineUsers);
+  const currentTab = ChatStore((s) => s.currentTab);
+  const AllChats = ChatStore((s) => s.AllChats);
+  const OnlineChats = ChatStore((s) => s.OnlineChats);
+  const PrivateChats = ChatStore((s) => s.PrivateChats);
+  const GroupChats = ChatStore((s) => s.GroupChats);
+  const onlineUsers = AuthStore((s) => s.onlineUsers);
+  //
 
-  // const [recentMessages, setRecentMessages] = useState([]);
   const [isAddRoomButtonOn, setIsAddRoomButtonOn] = useState(false);
-  // const [isSearchOn, setIsSearchOn] = useState(false);
-
-  // const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   //
-  //   getUsers();
-  // }, []);
-
-  useEffect(() => {
-    //
-    console.log(onlineUsers);
-  }, [onlineUsers]);
 
   //
 
@@ -76,9 +70,14 @@ const RecentChatBar = () => {
           </div>
           <h2>Chats</h2>
           <div id="ChatBar_RecentMessages">
-            {recentUsers.map((chat) => {
-              return <MessagePreviewDiv chatInfo={chat} />;
-            })}
+            {/* ["All", "Online", "Private", "Group"] */}
+            {currentTab === "All"
+              ? AllChats.map((chat) => <MessagePreviewDiv chatInfo={chat} />)
+              : currentTab === "Online"
+              ? AllChats.filter((chat) =>
+                  chat.users.some((userID) => onlineUsers?.includes(userID))
+                ).map((chat) => <MessagePreviewDiv chatInfo={chat} />)
+              : null}
             <div
               id="r_cb_floating_button"
               onClick={() => {

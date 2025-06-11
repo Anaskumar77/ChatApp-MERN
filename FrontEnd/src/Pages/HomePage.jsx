@@ -4,14 +4,20 @@ import RecentChatBar from "../Components/RecentChatBar.jsx";
 import ChatRoom from "../Components/ChatRoom.jsx";
 import Profile from "../Components/Profile.jsx";
 import ChatStore from "../lib/Store/ChatStore.js";
+import AuthStore from "../lib/Store/AuthStore.js";
 //
 
 const HomePage = () => {
   const getAllRoom = ChatStore((s) => s.getAllRoom);
+  const onlineUsers = AuthStore((s) => s.onlineUsers);
 
   useEffect(() => {
     getAllRoom();
   }, []);
+
+  useEffect(() => {
+    console.log(onlineUsers);
+  }, [onlineUsers]);
   return (
     <div
       style={{

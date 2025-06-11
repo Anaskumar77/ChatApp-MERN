@@ -10,7 +10,6 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
   const searchedUsers = ChatStore((s) => s.searchedUsers);
   const setSearchedUsers = ChatStore((s) => s.setSearchedUsers);
   const setSelectedUser = ChatStore((s) => s.setSelectedUser);
-  const getAllRoom = ChatStore((s) => s.getAllRoom);
   const createRoom = ChatStore((s) => s.createRoom);
   //
   const [inputText, setInputText] = useState("");

@@ -13,15 +13,13 @@ import ChatStore from "../lib/Store/ChatStore.js";
 //
 
 const ChatRoom = () => {
-  //
-  // const authUser = AuthStore((state) => state.authUser);
+  const currentTab = ChatStore((s) => s.currentTab);
+  const AllChats = ChatStore((s) => s.AllChats);
+  const OnlineChats = ChatStore((s) => s.OnlineChats);
+  const PrivateChats = ChatStore((s) => s.PrivateChats);
+  const GroupChats = ChatStore((s) => s.GroupChats);
 
-  // let chats = [0, 1, 2, 3, 4, 5, 6];
-
-  // const [chatList, setChatList] = useState(chats);
   const [message, setMessage] = useState("");
-
-  // const newMessage = null;
 
   const HandleMessageSubmit = () => {
     // id venam , message , receiver id venam
