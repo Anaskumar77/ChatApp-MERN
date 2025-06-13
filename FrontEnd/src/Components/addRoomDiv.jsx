@@ -3,18 +3,21 @@ import ForumIcon from "@mui/icons-material/Forum";
 import ChatStore from "../lib/Store/ChatStore";
 import "../Styles/AddRoomPage.css";
 
-const AddRoomDiv = ({ setIsRoomOpen }) => {
+const AddRoomDiv = () => {
   //
 
   const getSearchedUsers = ChatStore((s) => s.getSearchedUsers);
   const searchedUsers = ChatStore((s) => s.searchedUsers);
   const setSearchedUsers = ChatStore((s) => s.setSearchedUsers);
-  const setSelectedUser = ChatStore((s) => s.setSelectedUser);
   const createRoom = ChatStore((s) => s.createRoom);
+  const setIsAddRoomVisibleFalse = ChatStore((s) => s.setIsAddRoomVisibleFalse);
+  const isAddRoomVisible = ChatStore((s) => s.isAddRoomVisible);
   //
   const [inputText, setInputText] = useState("");
   const [selectedGroupMembers, setSelectedGroupMembers] = useState([]);
   const [isGroupOn, setIsGroupOn] = useState(false);
+  const [trigger, setTrigger] = useState(false);
+
   const fetch_limit = 20;
 
   useCallback(getSearchedUsers, [getSearchedUsers]);
@@ -26,6 +29,13 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
   }, [inputText, getSearchedUsers]);
 
   //====================================================================
+
+  useEffect(() => {
+    if (trigger) {
+      HandleCreateRoomSubmit(isGroupOn);
+      setTrigger(false);
+    }
+  }, [selectedGroupMembers]);
 
   const HandleCreateRoomSubmit = (isGroupOn) => {
     createRoom(selectedGroupMembers, isGroupOn);
@@ -44,8 +54,8 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
               setSelectedGroupMembers((prev) => [...prev, info._id]);
             }
           } else {
-            setSelectedGroupMembers(() => [info._id]);
-            HandleCreateRoomSubmit(isGroupOn);
+            setSelectedGroupMembers((prev) => [...prev, info._id]);
+            setTrigger(true);
           }
         }}
         id="iu_container"
@@ -72,9 +82,11 @@ const AddRoomDiv = ({ setIsRoomOpen }) => {
     <div
       onClick={(e) => {
         if (e.target.id === "AddRoom_page") {
-          setIsRoomOpen(false);
+          console.log("hello");
+          setIsAddRoomVisibleFalse();
           setSearchedUsers([]);
           setSelectedGroupMembers([]);
+          console.log(isAddRoomVisible);
         }
       }}
       id="AddRoom_page"

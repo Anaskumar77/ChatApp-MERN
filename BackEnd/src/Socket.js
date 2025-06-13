@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 import http from "http";
 import socketHandler from "./middlewares/socket.script.js";
 import UserModel from "./Models/userModel.js";
+import onlineUsers from "./lib/onlineUsers.js";
 const app = express();
 const server = http.createServer(app);
 
@@ -18,8 +19,6 @@ export const getReceiverSocketId = (userId) => {
   return onlineUsers[userId];
 };
 
-let onlineUsers = {}; // {userId : socket.id}
-
 io.on("connection", async (socket) => {
   console.log("1 : socket connected", socket.id);
 
@@ -27,7 +26,7 @@ io.on("connection", async (socket) => {
   const userId = socket.handshake.query.userId;
 
   try {
-    onlineUsers[userId] = socket.id;
+    onlineUsers[userId] = socket.id; // {userId : socket.id}
 
     const res = await UserModel.findByIdAndUpdate(
       { _id: userId },
@@ -42,7 +41,7 @@ io.on("connection", async (socket) => {
 
   io.emit("getOnlineUsers", Object.keys(onlineUsers)); // emitting the userID / authUser._id to each client
 
-  socketHandler(socket);
+  socketHandler({ socket, io });
 
   socket.on("disconnect", async () => {
     //

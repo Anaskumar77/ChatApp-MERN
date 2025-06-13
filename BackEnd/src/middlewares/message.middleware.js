@@ -2,6 +2,9 @@ import MessageModel from "../Models/messageModel.js";
 import RoomModel from "../Models/roomModel.js";
 import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
+import multer from "multer";
+import cloudinary from "../lib/CloudinaryConfig.js";
+import onlineUsers from "../lib/onlineUsers.js";
 
 //=================================================================
 // Create Group and respond with RoomModel response
@@ -29,7 +32,6 @@ export const createGroup = async (req, res) => {
       return res.status(500).josn({ message: "failed creating room model" });
     }
   } catch (err) {
-    b;
     console.log(err.message);
     return res.json({ message: err.message });
   }
@@ -45,7 +47,9 @@ export const createPrivate = async (req, res) => {
   const receiverId = receiverIdList[0]; //accessing the only element
 
   if (!userId || !receiverId)
-    return res.json({ message: "please provide users List" });
+    return res.json({
+      message: `please provide users List ${userId},${receiverId}`,
+    });
 
   try {
     const receiverInfo = await UserModel.findById({ _id: receiverId });
@@ -93,6 +97,7 @@ export const searchUsers = async (req, res) => {
   try {
     const users = await UserModel.find({
       name: { $regex: input, $options: "i" },
+      _id: { $ne: req.user._id },
     }).limit(Number(limit));
 
     return res.json(users);
@@ -103,23 +108,29 @@ export const searchUsers = async (req, res) => {
 
 //====================================================================
 
-export const fetchChatMessages = (req, res) => {
+export const fetchChatMessages = async (req, res) => {
   //  For getting all messages of a specific room
-
-  const userId = req.user._id;
-
-  const { receiverId } = req.params;
+  console.log("hello");
+  const receiverId = req.params.id; // means room id
+  console.log(receiverId);
 
   if (!receiverId) return res.json({ message: "no receiver id" });
 
-  //  get reciever id
+  try {
+    const messagesRes = await MessageModel.find({ room: receiverId }).sort({
+      createdAt: 1,
+    });
 
-  //  find messages with user and receiver are either sender or receiver in messageModel
-  //
-  //
-  // grtting specific chat messages logic
-  //
-  //
+    if (!messagesRes)
+      return res
+        .status(500)
+        .json({ message: "fetchChatMessages : failed to fetch messages" });
+
+    return res.status(200).json(messagesRes);
+  } catch (err) {
+    console.log(err.message);
+    return res.status(500).json({ message: err.message });
+  }
 };
 
 //=================================================================
@@ -157,39 +168,47 @@ export const fetchLatestChats = async (req, res) => {
   }
 };
 
-//======================================================================
-// For Tab online
-
-// export const fetchOnlineChats = (req, res) => {
-//   const userId = req.user._id;
-
-//   //fetch online users
-//   try {
-//     console.log("fatch online chats");
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// };
-
 //=====================================================================
 
-export const sendMessages = (req, res) => {
+export const sendMessages = async (req, res) => {
   //
-  //save it to the data base
-  //
-  // sending logic
-  //if q clint is online you can send the messge live
-  const receiverSocketId = getReceiverSocketId(userId);
-  if (receiverSocketId) io.to(receiverSocketId).emit("message");
+  const userId = req.user._id;
+  const { groupId, message, media } = req.body;
 
-  //
+  if (!groupId || !message)
+    return res.status(400).json({ message: "provide group id and message" });
+
+  try {
+    //
+    let mediaURL = null;
+
+    if (media) {
+      //
+      mediaURL = await cloudinary.uploader.upload(media);
+      //
+      if (!mediaURL)
+        return res
+          .status(500)
+          .json({ message: "error in uploading the file " });
+    }
+    console.log(mediaURL);
+
+    const newMessage = new MessageModel({
+      sender: userId,
+      room: groupId,
+      content: message,
+      media: mediaURL,
+      status: "send",
+    });
+
+    const DBres = await newMessage.save();
+    if (!DBres)
+      return res
+        .status(500)
+        .json({ message: "failed in creating messageModel" });
+
+    return res.status(201).json(DBres);
+  } catch (err) {
+    console.log(err.message);
+  }
 };
-
-//========================================================================
-
-export const Anjali = async (req, res) => {
-  res.json({ message: "yee" });
-  console.log("anjali");
-};
-
-// export const

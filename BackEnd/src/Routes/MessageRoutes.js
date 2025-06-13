@@ -16,7 +16,7 @@ router.get("/search", Authorization, searchUsers);
 router.get("/user/all", Authorization, fetchLatestChats);
 // router.get("/user/online", Authorization, fetchOnlineChats);
 router.get("/chats/:id", Authorization, fetchChatMessages);
-router.get("/send/:id", Authorization, sendMessages);
+router.post("/send", Authorization, sendMessages);
 router.post("/create/group", Authorization, createGroup);
 router.post("/create/private", Authorization, createPrivate);
 export default router;

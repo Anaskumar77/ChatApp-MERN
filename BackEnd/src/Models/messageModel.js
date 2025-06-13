@@ -7,22 +7,27 @@ const messageSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    receiver: {
+    room: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+      ref: "Room",
     },
     content: {
       type: String,
       required: true,
     },
+    media: {
+      type: String || null, // options : image , text
+    },
+    mediaType: {
+      type: String,
+    },
+    status: {
+      type: String,
+      required: true, //   options:  send , delivered , seen
+    },
     timestamp: {
       type: Date,
       default: Date.now,
-    },
-    room: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
     },
   },
   { timestamps: true }

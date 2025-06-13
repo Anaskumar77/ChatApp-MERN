@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import SideBar from "../Components/SideBar.jsx";
 import RecentChatBar from "../Components/RecentChatBar.jsx";
 import ChatRoom from "../Components/ChatRoom.jsx";

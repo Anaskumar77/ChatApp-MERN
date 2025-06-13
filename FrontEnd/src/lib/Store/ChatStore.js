@@ -3,18 +3,27 @@ import axios from "axios";
 import debounce from "lodash.debounce"; // create as function delay
 import AuthStore from "./AuthStore";
 const ChatStore = create((set, get) => ({
-  searchedUsers: [],
-  selectedUser: null,
+  selectedUser: null, // this is actualy room id
+  currentTab: "All",
+  isAddRoomVisible: false,
+  isChatRoomVisible: true,
+  isProfileSecVisible: true,
+
   isUsersLoading: false,
   isImageUploading: false,
   isMessagesLoading: false,
-  currentTab: "Online",
+
+  messages: [], // store new messages
+  searchedUsers: [],
   AllChats: [], // dynamic
   OnlineChats: [],
   PrivateChats: [], // dynamic
   GroupChats: [], // dynamic
 
   //=================================================================================
+  appendMessages: (newMessage) => {
+    set((state) => ({ messages: [...state.messages, newMessage] })); //append new messages
+  },
 
   setSelectedUser: (user) => {
     set({ selectedUser: user });
@@ -30,15 +39,24 @@ const ChatStore = create((set, get) => ({
 
   setOnlineState: () => {
     const onlineUsers = AuthStore((s) => s.onlineUsers);
+    onlineUsers;
+
+    // set AllChats
+  },
+  setIsAddRoomVisibleTrue: () => {
+    set({ isAddRoomVisible: true });
+    // return get().isAddRoomVisible;
+  },
+  setIsAddRoomVisibleFalse: () => {
+    set({ isAddRoomVisible: false });
+  },
+  setIsChatRoomVisible: (data) => {
+    set({ isChatRoomVisible: data });
   },
 
   //=================================================================================
 
   getSearchedUsers: debounce(async ({ input, fetch_limit }) => {
-    //
-    /// remember to debug that it fetches including the user info also  !!!!!!!!!!!!!!!!
-    //
-
     try {
       const res = await axios.get(
         `http://localhost:7000/api/message/search?input=${input}&limit=${fetch_limit}`,
@@ -77,29 +95,6 @@ const ChatStore = create((set, get) => ({
 
   //=================================================================================
 
-  getOnlineRoom: async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:7000/api/message/user/online",
-        {
-          withCredentials: true,
-        }
-      );
-
-      console.log("yeeeeeee", res.data);
-
-      if (res.status === 200) {
-        set({ OnlineChats: res.data });
-      } else {
-        console.log(res);
-      }
-    } catch (err) {
-      console.error(err.message);
-    }
-  },
-
-  //=================================================================================
-
   createRoom: async (users, isGroup) => {
     // users = list
 
@@ -113,15 +108,13 @@ const ChatStore = create((set, get) => ({
           withCredentials: true,
         }
       );
-      if (res.status == 201) {
+      if (res.status == 201 || res.status == 200) {
         console.log(res);
         set({ selectedUser: res.data });
-
+        set({ isAddRoomVisible: false });
         // response have room id and users
-
+        console.log(res.data);
         return;
-      } else {
-        console.log(res);
       }
     } catch (err) {
       console.error(err.message);
@@ -129,13 +122,34 @@ const ChatStore = create((set, get) => ({
   },
 
   //------------------------------------------------------------------------------
-
+  sendMessage: async (payload) => {
+    try {
+      const res = await axios.post(
+        `http://localhost:7000/api/message/send`,
+        payload,
+        {
+          withCredentials: true,
+        }
+      );
+      if (res.status == 200) {
+        console.log(res.data);
+      } else {
+        console.log(res);
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
+  },
   getChats: async () => {
     //
-    const receiverId = get().selectedUser;
+    const { _id } = get().selectedUser;
+    console.log(_id);
     try {
-      const res = axios.get(
-        `http://localhost:7000/api/message/chats/:${receiverId}`
+      const res = await axios.get(
+        `http://localhost:7000/api/message/chats/${_id}`,
+        {
+          withCredentials: true,
+        }
       );
 
       console.log(res);

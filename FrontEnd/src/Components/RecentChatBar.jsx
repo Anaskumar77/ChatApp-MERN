@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 // import { useNavigate } from "react-router-dom";
 import ScrollableTabsButtonPrevent from "./TabDiv.jsx";
 import "../Styles/RecentChatBar.css";
@@ -9,16 +9,22 @@ import AddIcon from "@mui/icons-material/Add";
 
 export const MessagePreviewDiv = ({ chatInfo }) => {
   const setSelectedUser = ChatStore((state) => state.setSelectedUser);
+  const socket = AuthStore((s) => s.socket);
+  const authUser = AuthStore((s) => s.authUser);
+  const getChats = ChatStore((s) => s.getChats);
+
   const RecentMessageClick = (user) => {
     //
+    console.log(user);
     setSelectedUser(user);
-    // get messages logic\
-    // console.log(chatInfo._id, " : ", chatInfo.users)/;
+    getChats();
+    socket.emit("join_group", { groupId: chatInfo._id, userId: authUser._id });
   };
 
   return (
     <div
-      onClick={RecentMessageClick(chatInfo._id)}
+      key={chatInfo._id}
+      onClick={() => RecentMessageClick(chatInfo)}
       className="messagePreviewDiv"
     >
       <div className="mp_avatarDiv">
@@ -52,9 +58,10 @@ const RecentChatBar = () => {
   const PrivateChats = ChatStore((s) => s.PrivateChats);
   const GroupChats = ChatStore((s) => s.GroupChats);
   const onlineUsers = AuthStore((s) => s.onlineUsers);
-  //
+  const isAddRoomVisible = ChatStore((s) => s.isAddRoomVisible);
+  const setIsAddRoomVisibleTrue = ChatStore((s) => s.setIsAddRoomVisibleTrue);
 
-  const [isAddRoomButtonOn, setIsAddRoomButtonOn] = useState(false);
+  //
 
   //
 
@@ -76,21 +83,19 @@ const RecentChatBar = () => {
               : currentTab === "Online"
               ? AllChats.filter((chat) =>
                   chat.users.some((userID) => onlineUsers?.includes(userID))
-                ).map((chat) => <MessagePreviewDiv chatInfo={chat} />)
+                )
+                  .filter((user) => user.isGroup === false)
+                  .map((chat) => <MessagePreviewDiv chatInfo={chat} />)
               : null}
             <div
               id="r_cb_floating_button"
-              onClick={() => {
-                setIsAddRoomButtonOn((prev) => !prev);
-              }}
+              onClick={() => setIsAddRoomVisibleTrue()}
             >
               <AddIcon />
             </div>
           </div>
         </div>
-        {isAddRoomButtonOn ? (
-          <AddRoomDiv setIsRoomOpen={setIsAddRoomButtonOn} />
-        ) : null}
+        {isAddRoomVisible ? <AddRoomDiv /> : null}
       </>
     );
   };
