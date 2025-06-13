@@ -2,6 +2,7 @@ import { create } from "zustand";
 import axios from "axios";
 import debounce from "lodash.debounce"; // create as function delay
 import AuthStore from "./AuthStore";
+
 const ChatStore = create((set, get) => ({
   selectedUser: null, // this is actualy room id
   currentTab: "All",
@@ -37,12 +38,6 @@ const ChatStore = create((set, get) => ({
     set({ searchedUsers: data });
   },
 
-  setOnlineState: () => {
-    const onlineUsers = AuthStore((s) => s.onlineUsers);
-    onlineUsers;
-
-    // set AllChats
-  },
   setIsAddRoomVisibleTrue: () => {
     set({ isAddRoomVisible: true });
     // return get().isAddRoomVisible;
@@ -131,8 +126,9 @@ const ChatStore = create((set, get) => ({
           withCredentials: true,
         }
       );
-      if (res.status == 200) {
-        console.log(res.data);
+      if (res.status == 201) {
+        console.log("sendMessage reposnse from backEnd :", res.data);
+        // set((state) => ({ messages: [...state.messages, res.data] }));
       } else {
         console.log(res);
       }
@@ -151,10 +147,12 @@ const ChatStore = create((set, get) => ({
           withCredentials: true,
         }
       );
-
-      console.log(res);
-      // response logic
-      //
+      if (res.status === 200) {
+        set({ messages: res.data });
+        console.log(typeof res.data, res.data);
+      } else {
+        console.log(res.message);
+      }
     } catch (err) {
       //
       console.error(err.message);

@@ -116,3 +116,12 @@
 #ch_f_sendButton:hover {
   background-color: rgba(137, 43, 226, 0.743);
 }
+
+.chat-end {
+  justify-content: end;
+  padding-right: 20px;
+}
+.chat-start {
+  justify-content: baseline;
+  padding-left: 20px;
+}

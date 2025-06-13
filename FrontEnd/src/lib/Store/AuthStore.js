@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 import { io } from "socket.io-client";
+import ChatStore from "./ChatStore.js";
 // import HandleClientSocket from "../HandleClientSockets";
 
 const BASE_URL = "http://localhost:7000/";
@@ -38,18 +39,14 @@ const AuthStore = create((set, get) => ({
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds.filter((id) => id !== get().authUser._id) });
     });
+    const { appendMessages, messages } = ChatStore.getState();
 
     socket.on("receive_group_message", (data) => {
-      if (data.content) {
-        console.log(data.content);
-      } else {
-        console.log("no data from receive groupmessage");
+      if (data) {
+        appendMessages(data);
+        console.log(messages);
       }
     });
-
-    // HandleClientSocket(socket);
-
-    //
   },
 
   //

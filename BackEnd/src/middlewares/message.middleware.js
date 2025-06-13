@@ -191,13 +191,13 @@ export const sendMessages = async (req, res) => {
           .status(500)
           .json({ message: "error in uploading the file " });
     }
-    console.log(mediaURL);
+    console.log("mediaURL: ", mediaURL, groupId);
 
     const newMessage = new MessageModel({
       sender: userId,
       room: groupId,
       content: message,
-      media: mediaURL,
+      media: mediaURL?.secure_url,
       status: "send",
     });
 
@@ -207,8 +207,11 @@ export const sendMessages = async (req, res) => {
         .status(500)
         .json({ message: "failed in creating messageModel" });
 
+    io.to(groupId).emit("receive_group_message", DBres);
+
     return res.status(201).json(DBres);
   } catch (err) {
     console.log(err.message);
+    res.status(500).json({ message: err.message });
   }
 };

@@ -5,7 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AccountBoxSharpIcon from "@mui/icons-material/AccountBoxSharp";
 import SendIcon from "@mui/icons-material/Send";
 //
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../Styles/ChatRoom.css";
 import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
@@ -74,8 +74,12 @@ const ChatRoom = () => {
               {/*  */}
               {messages.map((item) => {
                 return (
-                  <div className={`chat chat-${item > 3 ? "start" : "end"}`}>
-                    <div className="chat-bubble ">It's insulting!</div>
+                  <div
+                    className={`chat chat-${
+                      item.sender !== authUser._id ? "start" : "end"
+                    }`}
+                  >
+                    <div className="chat-bubble ">{item.content}</div>
                   </div>
                 );
               })}
