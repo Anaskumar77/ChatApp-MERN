@@ -81,6 +81,7 @@
   display: flex;
   align-items: center;
   column-gap: 8px;
+  position: relative;
 }
 #ch_f_addButton {
   display: flex;
@@ -125,4 +126,13 @@
 .chat-start {
   justify-content: baseline;
   padding-left: 20px;
+}
+/* #ch_f_input:: */
+
+input::before {
+  content: "none";
+  width: 20px;
+  z-index: 1;
+  height: 30px;
+  background-color: aqua;
 }

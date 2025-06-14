@@ -117,9 +117,14 @@ export const fetchChatMessages = async (req, res) => {
   if (!receiverId) return res.json({ message: "no receiver id" });
 
   try {
-    const messagesRes = await MessageModel.find({ room: receiverId }).sort({
-      createdAt: 1,
-    });
+    const messagesRes = await MessageModel.find({ room: receiverId })
+      .populate({
+        path: "sender",
+        select: "name avatar",
+      })
+      .sort({
+        createdAt: 1,
+      });
 
     if (!messagesRes)
       return res
@@ -203,22 +208,31 @@ export const sendMessages = async (req, res) => {
       status: "send",
     });
 
-    const DBres = await newMessage.save();
-    if (!DBres)
+    const firstRes = await newMessage.save();
+
+    if (!firstRes)
       return res
         .status(500)
         .json({ message: "failed in creating messageModel" });
 
-    const roomRes = await RoomModel.findByIdAndUpdate(
+    await RoomModel.findByIdAndUpdate(
       { _id: groupId },
-      { lastMessage: DBres._id }
+      { lastMessage: firstRes._id }
     );
 
-    console.log(roomRes);
+    console.log("\n\n\n\n\n1", firstRes);
 
-    io.to(groupId).emit("receive_group_message", DBres);
+    const messagesRes = await MessageModel.findOne({
+      _id: firstRes._id,
+    }).populate({
+      path: "sender",
+      select: "name avatar",
+    });
+    console.log("\n\n\n\n\n2", messagesRes);
 
-    return res.status(201).json(DBres);
+    io.to(groupId).emit("receive_group_message", messagesRes);
+
+    return res.status(201).json(messagesRes);
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: err.message });

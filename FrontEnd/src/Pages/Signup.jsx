@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import authStore from "../lib/Store/AuthStore.js";
 import "../Styles/SignupPage.css";
 import PasswordCheck from "../utils/passwordCheck.js";
-import image from "../../public/signupPageillustration.jpg";
+import image from "/signupPageillustration.jpg";
 const SignUpPage = () => {
   const name = useRef();
   const email = useRef();

@@ -9,6 +9,7 @@ import { useState, useRef } from "react";
 import "../Styles/ChatRoom.css";
 import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
+import MessageGrid from "./MessageGrid.jsx";
 
 //
 
@@ -75,17 +76,9 @@ const ChatRoom = () => {
           <div id="ch_main_div">
             <div id="ch_main_inner_div" ref={scrollDiv}>
               {/*  */}
-              {messages.map((item) => {
-                return (
-                  <div
-                    className={`chat schat-${
-                      item.sender == authUser._id ? "end" : "start"
-                    }`}
-                  >
-                    <div className="chat-bubble ">{item.content}</div>
-                  </div>
-                );
-              })}
+              {messages.map((item) => (
+                <MessageGrid message={item} />
+              ))}
               {/*  */}
             </div>
           </div>
@@ -100,6 +93,8 @@ const ChatRoom = () => {
               type="text"
               placeholder="write a message"
             ></input>
+            <div className="hello"></div>
+
             <div
               id="ch_f_sendButton"
               onClick={() => HandleMessageSubmit()}

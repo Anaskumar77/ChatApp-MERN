@@ -43,6 +43,7 @@ const AuthStore = create((set, get) => ({
 
     socket.on("receive_group_message", (data) => {
       if (data) {
+        console.log(data);
         appendMessages(data);
         console.log(messages);
       }

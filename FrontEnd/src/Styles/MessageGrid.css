@@ -1,0 +1,50 @@
+#message_grid_container {
+  background-color: var(--color-violet-950);
+  width: 100%;
+  min-height: 70px;
+  max-height: 200px;
+  --gap: 8px;
+  padding: calc(var(--gap) / 2);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+#message_grid {
+  max-width: 60%;
+  height: calc(70px - var(--gap));
+  background-color: var(--color-violet-800);
+  display: flex;
+  /* flex-direction: row-reverse; */
+  justify-content: baseline;
+}
+#m_g_profilePic_sec {
+  height: 100%;
+  width: 46px;
+  background-color: var(--color-violet-700);
+}
+.m_g_pfp_div {
+  width: 46px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background-color: var(--color-violet-500);
+}
+.m_g_pfp_img {
+  background-color: black;
+}
+
+#m_g_message_sec {
+  flex: 1;
+  background-color: var(--color-violet-600);
+}
+#m_g_name_time {
+  display: flex;
+  column-gap: 10px;
+  align-items: baseline;
+  justify-content: baseline;
+  padding-left: var(--gap);
+}
+
+#message_grid_container_self {
+  background-color: brown;
+}
