@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import authStore from "../lib/Store/AuthStore.js";
 import "../Styles/SignupPage.css";
 import PasswordCheck from "../utils/passwordCheck.js";
+import image from "../../public/signupPageillustration.jpg";
 const SignUpPage = () => {
   const name = useRef();
   const email = useRef();
@@ -71,6 +72,7 @@ const SignUpPage = () => {
       </form>
 
       <div id="signup_page_illustration_container">
+        <img id="signup_image" src={image}></img>
         <div id="illustrator_header"></div>
         <div id="illustrator_QRCode_div"></div>
       </div>

@@ -1,0 +1,163 @@
+#profile_container {
+  /*  */
+  --gap: 8px;
+  /*  */
+  height: 100dvh;
+  width: 400px;
+  background-color: black;
+  padding: calc(var(--gap));
+  min-width: 375px;
+  max-width: 400px;
+}
+#profile_sub_container {
+  height: calc(100%);
+  width: calc(100%);
+  background-color: var(--color-zinc-800);
+  /* background-color: azure; */
+  border-radius: 30px;
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+}
+.profile_banner_div {
+  width: 100%;
+  aspect-ratio: 16/7;
+  background-color: var(--color-zinc-600);
+  border-radius: 22px;
+  overflow: visible;
+  position: relative;
+  /* box-shadow: 0px 0px 3px 0px rgb(0, 0, 0); */
+}
+.p_b_image_div {
+  border-radius: 22px;
+  height: 100%;
+  width: 100%;
+  background-color: brown;
+  /* padding-left: 10px; */
+  overflow: hidden;
+  position: relative;
+}
+.p_b_img {
+  object-fit: contain;
+}
+.p_b_img_overlay {
+  position: absolute;
+  top: 0px;
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(
+    0deg,
+    rgb(0, 0, 0),
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 0)
+  );
+  z-index: 2;
+}
+.p_b_status {
+  width: 150px;
+  height: 36px;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /*  */
+  background: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+  backdrop-filter: blur(1px); /* this creates the glass blur effect */
+  -webkit-backdrop-filter: blur(1px); /* Safari support */
+  border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border for edges */
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* optional soft shadow */
+}
+.p_b_status > h1 {
+  color: white;
+}
+.p_avatar_div {
+  height: 55%;
+  aspect-ratio: 1/1;
+  background-color: var(--color-zinc-400);
+  position: absolute;
+  bottom: -26px;
+  left: 8px;
+  z-index: 2;
+  border-radius: 50%;
+}
+#profile_info_div {
+  /* background-color: var(--color-zinc-600); */
+  width: 100%;
+  height: fit-content;
+  margin-top: 26px;
+  padding: var(--gap);
+}
+.profile_info_username {
+  /* line-height: 30px; */
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.profile_info_about {
+  opacity: 70%;
+  width: 100%;
+  max-height: 48px;
+}
+#profile_email_div {
+  width: 100%;
+  height: 36px;
+  background-color: var(--color-zinc-700);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
+  padding-left: var(--gap);
+}
+#p_3row_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex: 1;
+  margin-top: 30px;
+  /* background-color: azure; */
+  border-radius: 0px 0px 20px 20px;
+}
+.p_3row_tabs {
+  height: 50px;
+}
+.p_3row_div_sub {
+  flex: 1;
+  width: 100%;
+  overflow: scroll;
+  border-radius: var(--gap);
+}
+.p_3row_sub_div {
+  width: 100%;
+  column-count: 3;
+  gap: var(--gap);
+  padding: var(--gap);
+}
+.c_img {
+  /* border: 1px solid rgb(255, 255, 255); */
+  background-color: var(--color-zinc-700);
+  border-radius: var(--gap);
+  margin-bottom: var(--gap);
+  width: 100%;
+  max-width: 150px;
+}
+.column_images1 {
+  height: 140px;
+}
+.column_images2 {
+  height: 180px;
+}
+.column_images3 {
+  height: 150px;
+}
+.column_images4 {
+  height: 100px;
+}
+.column_images5 {
+  height: 250px;
+}
+.column_images6 {
+  height: 200px;
+}

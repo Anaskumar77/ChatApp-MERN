@@ -3,7 +3,7 @@
   box-sizing: border-box;
 }
 #chat_room_container {
-  width: 45dvw;
+  flex: 1;
   min-width: 375px;
   height: 100dvh;
   background-color: cornflowerblue;
@@ -72,6 +72,7 @@
   background-color: blueviolet;
   width: 100%;
   height: 98%;
+  scroll-behavior: smooth;
 }
 #chat_room_container > footer {
   width: 100%;

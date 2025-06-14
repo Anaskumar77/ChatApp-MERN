@@ -21,12 +21,19 @@
   justify-content: center;
 }
 #signup_page_illustration_container {
-  width: calc(50% - var(--margin) * 2);
+  /* width: calc(50% - var(--margin) * 2); */
   height: calc(100% - var(--margin) * 2);
+  aspect-ratio: 1/1;
 
   margin: var(--margin);
   border-radius: 20px;
   background-color: rgb(68, 68, 68);
+  overflow: hidden;
+}
+#signup_image {
+  aspect-ratio: 1/1;
+  height: 100%;
+  object-fit: cover;
 }
 
 #signup_h1_1,

@@ -5,7 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AccountBoxSharpIcon from "@mui/icons-material/AccountBoxSharp";
 import SendIcon from "@mui/icons-material/Send";
 //
-import { useState } from "react";
+import { useState, useRef } from "react";
 import "../Styles/ChatRoom.css";
 import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
@@ -24,6 +24,7 @@ const ChatRoom = () => {
 
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
+  const scrollDiv = useRef();
 
   const HandleMessageSubmit = () => {
     socket.emit("send_group_message", {
@@ -37,6 +38,8 @@ const ChatRoom = () => {
       media: file,
     };
     sendMessage(payload);
+    console.log(scrollDiv.current);
+    scrollDiv.current.scrollTop = scrollDiv.current.scrollHeight;
   };
 
   return (
@@ -70,13 +73,13 @@ const ChatRoom = () => {
             </div>
           </header>
           <div id="ch_main_div">
-            <div id="ch_main_inner_div">
+            <div id="ch_main_inner_div" ref={scrollDiv}>
               {/*  */}
               {messages.map((item) => {
                 return (
                   <div
-                    className={`chat chat-${
-                      item.sender !== authUser._id ? "start" : "end"
+                    className={`chat schat-${
+                      item.sender == authUser._id ? "end" : "start"
                     }`}
                   >
                     <div className="chat-bubble ">{item.content}</div>

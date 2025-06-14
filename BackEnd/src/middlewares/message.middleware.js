@@ -140,13 +140,15 @@ export const fetchLatestChats = async (req, res) => {
   //
   const userId = req.user._id; // only exists if it has authorized
 
-  console.log("latest users\n\n\n\n\n\n");
-
   try {
     //
     const recentChats = await RoomModel.find({
       $or: [{ users: userId }, { admin: userId }],
     })
+      .populate({
+        path: "users",
+        select: "name",
+      })
       .populate({
         path: "lastMessage",
         select: "content timestamp createdAt",
@@ -206,6 +208,13 @@ export const sendMessages = async (req, res) => {
       return res
         .status(500)
         .json({ message: "failed in creating messageModel" });
+
+    const roomRes = await RoomModel.findByIdAndUpdate(
+      { _id: groupId },
+      { lastMessage: DBres._id }
+    );
+
+    console.log(roomRes);
 
     io.to(groupId).emit("receive_group_message", DBres);
 

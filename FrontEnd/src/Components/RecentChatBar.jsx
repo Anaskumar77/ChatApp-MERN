@@ -8,7 +8,9 @@ import AddRoomDiv from "./addRoomDiv.jsx";
 import AddIcon from "@mui/icons-material/Add";
 
 export const MessagePreviewDiv = ({ chatInfo }) => {
+  //
   const setSelectedUser = ChatStore((state) => state.setSelectedUser);
+
   const socket = AuthStore((s) => s.socket);
   const authUser = AuthStore((s) => s.authUser);
   const getChats = ChatStore((s) => s.getChats);
@@ -32,7 +34,13 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
       </div>
       <div className="mp_subDiv">
         <div className="mp_name_time_div">
-          <h5>{chatInfo.name}</h5>
+          {chatInfo.isGroup === false ? (
+            chatInfo.users
+              .filter((user) => user._id !== authUser._id)
+              .map((item) => <h5>{item.name}</h5>)
+          ) : (
+            <h5>{chatInfo.name}</h5>
+          )}
           <h6>
             {new Date(chatInfo.updatedAt).toLocaleTimeString([], {
               hour: "2-digit",
@@ -42,7 +50,17 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
           </h6>
         </div>
         <div className="mp_message_div">
-          <h6>recent message</h6>
+          {!chatInfo.lastMessage ? (
+            <h6>No messages yet "-"</h6>
+          ) : chatInfo.isGroup === true ? (
+            <h6>
+              {chatInfo.lastMessage?.sender} : {chatInfo.lastMessage?.content}
+            </h6>
+          ) : chatInfo.lastMessage?.sender._id === authUser._id ? (
+            <h6>You : {chatInfo.lastMessage.content}</h6>
+          ) : (
+            <h6>{chatInfo.lastMessage.content}</h6>
+          )}
         </div>
       </div>
     </div>
@@ -54,9 +72,6 @@ const RecentChatBar = () => {
 
   const currentTab = ChatStore((s) => s.currentTab);
   const AllChats = ChatStore((s) => s.AllChats);
-  const OnlineChats = ChatStore((s) => s.OnlineChats);
-  const PrivateChats = ChatStore((s) => s.PrivateChats);
-  const GroupChats = ChatStore((s) => s.GroupChats);
   const onlineUsers = AuthStore((s) => s.onlineUsers);
   const isAddRoomVisible = ChatStore((s) => s.isAddRoomVisible);
   const setIsAddRoomVisibleTrue = ChatStore((s) => s.setIsAddRoomVisibleTrue);
