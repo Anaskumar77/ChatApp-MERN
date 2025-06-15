@@ -152,7 +152,7 @@ export const fetchLatestChats = async (req, res) => {
     })
       .populate({
         path: "users",
-        select: "name",
+        select: "name avatar",
       })
       .populate({
         path: "lastMessage",

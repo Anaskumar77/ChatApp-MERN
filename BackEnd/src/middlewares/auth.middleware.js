@@ -98,12 +98,15 @@ export const profileUpdate = async (req, res) => {
 
   const { profilePic } = req.body;
 
+  console.log(profilePic);
+
   if (!profilePic) return res.json({ message: "profilepic is missing" });
 
   try {
     const res_url = await cloudinary.uploader.upload(profilePic);
 
-    if (!res_url) return res.json({ message: "cloudinary not reponded" });
+    if (!res_url)
+      return res.json({ message: "failed to export image to the cloud" });
 
     const DB_response = await UserModel.findByIdAndUpdate(
       { _id: userId },

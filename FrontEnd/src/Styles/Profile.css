@@ -1,4 +1,7 @@
 #profile_container {
+  font-family: "poppins" sans-serif;
+  font-weight: 300;
+
   /*  */
   --gap: 8px;
   /*  */
@@ -64,11 +67,11 @@
   align-items: center;
   justify-content: center;
   /*  */
-  background: rgba(255, 255, 255, 0.1); /* semi-transparent white */
-  backdrop-filter: blur(1px); /* this creates the glass blur effect */
-  -webkit-backdrop-filter: blur(1px); /* Safari support */
-  border: 1px solid rgba(255, 255, 255, 0.2); /* subtle border for edges */
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); /* optional soft shadow */
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
 }
 .p_b_status > h1 {
   color: white;
@@ -160,4 +163,112 @@
 }
 .column_images6 {
   height: 200px;
+}
+
+#selfProfile_container {
+  --gap: 8px;
+  height: 100dvh;
+  background-color: black;
+  padding: calc(var(--gap));
+  min-width: 375px;
+  max-width: 400px;
+}
+#selfProfile_sub_container {
+  height: calc(100%);
+  width: calc(100%);
+  background-color: var(--color-zinc-800);
+  /* background-color: azure; */
+  border-radius: 30px;
+  padding: var(--gap);
+  display: flex;
+  flex-direction: column;
+  /* overflow-y: scroll; */
+}
+#selfProfile_scroll_container {
+  overflow-y: scroll;
+  border-radius: 25px;
+  scrollbar-width: none;
+}
+#selfProfile_hero_section {
+  width: 100%;
+  height: 70%;
+  background-color: var(--color-green-100);
+  position: relative;
+}
+#hero_section_bg_img {
+  object-fit: cover;
+  height: 100%;
+}
+#hero_sec_img_overlay {
+  position: absolute;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, #00000000, #00000000, rgb(0, 0, 0));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(1px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}
+#selfProfile_container_two {
+  background-color: rgb(0, 0, 0);
+  width: 100%;
+  height: 700px;
+  border: none;
+}
+.s_p_pfp_div {
+  width: 70%;
+  aspect-ratio: 1/1;
+  position: relative;
+}
+.s_p_pfp {
+  object-fit: cover;
+  height: 100%;
+  border-radius: 50%;
+}
+.pfp_edit_button {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.s_p_name {
+  font-family: "Lexend", sans-serif;
+  font-weight: 500;
+  text-align: center;
+  color: white;
+  font-size: x-large;
+}
+.s_p_about {
+  text-align: center;
+  font-weight: 300;
+  font-size: smaller;
+  color: rgba(255, 255, 255, 0.602);
+}
+
+.pfp_input {
+  width: 100%;
+  height: 100%;
+  background-color: darkorchid;
+}
+.pfp_input_icon {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  right: 16px;
+  bottom: 10px;
+  background-color: rgb(114, 219, 66);
+  border-radius: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

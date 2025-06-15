@@ -13,6 +13,6 @@ router.post("/signup", signup);
 router.post("/login", login);
 router.post("/logout", logout);
 router.get("/authCheck", Authorization, authCheck);
-router.post("/profileUpdate", Authorization, profileUpdate);
+router.post("/profile/update", Authorization, profileUpdate);
 
 export default router;
