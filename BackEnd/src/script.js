@@ -5,9 +5,9 @@ import connectDB from "./lib/DBConnect.js";
 import authRoutes from "./Routes/AuthRoutes.js";
 import messageRoutes from "./Routes/MessageRoutes.js";
 import searchRoutes from "./Routes/searchRoutes.js";
-import Authorization from "./middlewares/Authorization.js";
 import { server, app } from "./Socket.js";
 import cors from "cors";
+import fileUpload from "express-fileupload";
 
 dotenv.config();
 
@@ -19,7 +19,9 @@ app.use(
     credentials: true,
   })
 );
-app.use(express.json());
+app.use(fileUpload());
+
+app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser(process.env.COOKIE_SECRET_KEY));
 
 app.get("/api/test", (req, res) => {

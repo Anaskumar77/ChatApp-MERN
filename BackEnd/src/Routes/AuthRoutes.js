@@ -7,6 +7,7 @@ import {
   profileUpdate,
 } from "../middlewares/auth.middleware.js";
 import Authorization from "../middlewares/Authorization.js";
+import upload from "../services/multer.js";
 const router = express.Router();
 
 router.post("/signup", signup);

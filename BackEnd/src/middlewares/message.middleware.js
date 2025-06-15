@@ -131,6 +131,8 @@ export const fetchChatMessages = async (req, res) => {
         .status(500)
         .json({ message: "fetchChatMessages : failed to fetch messages" });
 
+    let receiver;
+
     return res.status(200).json(messagesRes);
   } catch (err) {
     console.log(err.message);
@@ -219,8 +221,6 @@ export const sendMessages = async (req, res) => {
       { _id: groupId },
       { lastMessage: firstRes._id }
     );
-
-    console.log("\n\n\n\n\n1", firstRes);
 
     const messagesRes = await MessageModel.findOne({
       _id: firstRes._id,

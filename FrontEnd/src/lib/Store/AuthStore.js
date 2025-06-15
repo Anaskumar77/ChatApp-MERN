@@ -151,6 +151,29 @@ const AuthStore = create((set, get) => ({
 
     get().disconnectSocket();
   },
+  imageUpload: async (file) => {
+    //
+
+    try {
+      //
+      const res = await axios.post(
+        "http://localhost:7000/api/auth/profile/update",
+        file,
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (res.status === !201) {
+        console.log(res);
+      } else {
+        console.log(res.data);
+      }
+    } catch (err) {
+      //
+      console.error(err.message);
+    }
+  },
 }));
 
 export default AuthStore;

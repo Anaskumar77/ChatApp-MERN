@@ -5,13 +5,13 @@ import AuthStore from "./AuthStore";
 
 const ChatStore = create((set, get) => ({
   selectedUser: null, // this is actualy room id
+  selectedUserId: null,
   currentTab: "All",
   isAddRoomVisible: false,
   isChatRoomVisible: true,
   isProfileSecVisible: true,
 
   isUsersLoading: false,
-  isImageUploading: false,
   isMessagesLoading: false,
 
   messages: [], // store new messages
@@ -47,6 +47,16 @@ const ChatStore = create((set, get) => ({
   },
   setIsChatRoomVisible: (data) => {
     set({ isChatRoomVisible: data });
+  },
+  setSelectedUserId: (room) => {
+    const { authUser } = AuthStore.getState();
+    if (room.isGroup == false) {
+      const user = room.users?.filter((user) => user._id !== authUser._id);
+
+      set({ selectedUserId: user[0] });
+    } else {
+      return;
+    }
   },
 
   //=================================================================================
@@ -160,36 +170,6 @@ const ChatStore = create((set, get) => ({
   },
 
   //------------------------------------------------------------------------------
-
-  imageUpload: async (file) => {
-    //
-    set({ isImageUploading: true });
-
-    try {
-      //
-      const res = await axios.post(
-        "http://localhost:7000/api/auth/profileUpdate",
-        {
-          profilPic: file,
-        },
-        {
-          withCredentials: true,
-        }
-      );
-
-      if (res.status === !201) {
-        console.log(res);
-      } else {
-        console.log(res.data);
-      }
-
-      set({ isImageUploading: false });
-      //
-    } catch (err) {
-      //
-      console.error(err.message);
-    }
-  },
 }));
 
 export default ChatStore;

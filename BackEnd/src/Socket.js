@@ -4,7 +4,9 @@ import http from "http";
 import socketHandler from "./middlewares/socket.script.js";
 import UserModel from "./Models/userModel.js";
 import onlineUsers from "./lib/onlineUsers.js";
+
 const app = express();
+
 const server = http.createServer(app);
 
 const io = new Server(server, {

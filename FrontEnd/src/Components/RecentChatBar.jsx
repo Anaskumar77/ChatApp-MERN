@@ -14,11 +14,13 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
   const socket = AuthStore((s) => s.socket);
   const authUser = AuthStore((s) => s.authUser);
   const getChats = ChatStore((s) => s.getChats);
+  const setSelectedUserId = ChatStore((s) => s.setSelectedUserId);
 
   const RecentMessageClick = (user) => {
     //
     console.log(user);
     setSelectedUser(user);
+    setSelectedUserId(user);
     getChats();
     socket.emit("join_group", { groupId: chatInfo._id, userId: authUser._id });
   };

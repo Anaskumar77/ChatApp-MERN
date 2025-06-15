@@ -15,9 +15,9 @@ const MessageGrid = ({ message }) => {
         <div id="m_g_profilePic_sec">
           <div className="m_g_pfp_div">
             <img
-              src={pfp}
+              src={message.sender?.avatar !== "" ? message.sender?.avatar : pfp}
               className="m_g_pfp_img"
-              //   src={message.sender?.avatar === "" ? pfp : message.sender?.avatar}
+              alt="/image.png"
             ></img>
           </div>
         </div>

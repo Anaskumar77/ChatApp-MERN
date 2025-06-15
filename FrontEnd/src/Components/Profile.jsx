@@ -1,18 +1,31 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import ChatStore from "../lib/Store/ChatStore.js";
+import AuthStore from "../lib/Store/AuthStore.js";
 import "../Styles/Profile.css";
 import bannerImg from "/defaultBanner.jpg";
 const Profile = () => {
-  const selectedUser = ChatStore((s) => s.selectedUser);
+  const imageUpload = AuthStore((s) => s.imageUpload);
+  const selectedUserId = ChatStore((s) => s.selectedUserId);
+  const [selectedImage, setSelectedImage] = useState();
 
   const fileRef = useRef();
+
   const handleFileClick = () => {
     fileRef.current.click();
   };
 
   const handleFileChange = (e) => {
+    //
     const file = e.target.files[0];
-    console.log(file.name, file);
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = async () => {
+      const base64image = reader.result;
+      setSelectedImage(base64image);
+      imageUpload({ profilePic: base64image });
+    };
   };
 
   return (
@@ -25,7 +38,18 @@ const Profile = () => {
                 <img id="hero_section_bg_img" src={bannerImg}></img>
                 <div id="hero_sec_img_overlay">
                   <div className="s_p_pfp_div">
-                    <img className="s_p_pfp" src={bannerImg}></img>
+                    <img
+                      className="s_p_pfp"
+                      src={
+                        selectedImage
+                          ? selectedImage
+                          : selectedUserId
+                          ? selectedUserId.avatar !== ""
+                            ? selectedUserId.avatar
+                            : bannerImg
+                          : bannerImg
+                      }
+                    ></img>
                     <div className="pfp_edit_button">
                       <input
                         type="file"
