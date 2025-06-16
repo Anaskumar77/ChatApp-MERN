@@ -7,7 +7,7 @@
   overflow: hidden;
   display: flex;
   align-items: center;
-  animation: popup 500ms ease-out;
+  animation: popup 0.5s ease-out;
 }
 
 #message_grid {

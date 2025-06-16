@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ForumIcon from "@mui/icons-material/Forum";
 import ChatStore from "../lib/Store/ChatStore";
 import "../Styles/AddRoomPage.css";
-
+import pfp from "/image.png";
 const AddRoomDiv = () => {
   //
 
@@ -38,8 +38,13 @@ const AddRoomDiv = () => {
   }, [selectedGroupMembers]);
 
   const HandleCreateRoomSubmit = (isGroupOn) => {
+    // const selectedMembersIds = selectedGroupMembers.map((item)=)
     createRoom(selectedGroupMembers, isGroupOn);
   };
+
+  useEffect(() => {
+    if (!isGroupOn) setSelectedGroupMembers([]);
+  }, [isGroupOn]);
 
   const IndividualUser = ({ info }) => {
     return (
@@ -102,6 +107,7 @@ const AddRoomDiv = () => {
             id="add_room_searchbar"
           ></input>
         </div>
+
         <div
           id="ar_newGroup_div"
           onClick={() => {
@@ -110,6 +116,20 @@ const AddRoomDiv = () => {
         >
           <ForumIcon />
           <h4>New Group</h4>
+        </div>
+        <div id="ar_showAvatarsDiv">
+          {searchedUsers
+            .filter((user) => selectedGroupMembers.includes(user._id))
+            .map((user) => {
+              return (
+                <div className="ar_selected_img_div">
+                  <img
+                    className="ar_selected_img"
+                    src={user.avatar !== "" ? user.avatar : pfp}
+                  ></img>
+                </div>
+              );
+            })}
         </div>
         <div id="ar_usersList_div">
           {searchedUsers

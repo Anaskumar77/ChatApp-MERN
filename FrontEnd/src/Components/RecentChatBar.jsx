@@ -56,12 +56,13 @@ export const MessagePreviewDiv = ({ chatInfo }) => {
             <h6>No messages yet "-"</h6>
           ) : chatInfo.isGroup === true ? (
             <h6>
-              {chatInfo.lastMessage?.sender} : {chatInfo.lastMessage?.content}
+              {chatInfo.lastMessage?.sender?.name} :{" "}
+              {chatInfo.lastMessage?.content}
             </h6>
           ) : chatInfo.lastMessage?.sender._id === authUser._id ? (
-            <h6>You : {chatInfo.lastMessage.content}</h6>
+            <h6>You : {chatInfo.lastMessage?.content}</h6>
           ) : (
-            <h6>{chatInfo.lastMessage.content}</h6>
+            <h6>{chatInfo.lastMessage?.content}</h6>
           )}
         </div>
       </div>

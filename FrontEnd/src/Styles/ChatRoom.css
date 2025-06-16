@@ -125,12 +125,3 @@
   justify-content: baseline;
   padding-left: 20px;
 }
-/* #ch_f_input:: */
-
-input::before {
-  content: "none";
-  width: 20px;
-  z-index: 1;
-  height: 30px;
-  background-color: aqua;
-}

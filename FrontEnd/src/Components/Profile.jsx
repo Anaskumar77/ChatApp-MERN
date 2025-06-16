@@ -35,7 +35,18 @@ const Profile = () => {
           <div id="selfProfile_sub_container">
             <div id="selfProfile_scroll_container">
               <div id="selfProfile_hero_section">
-                <img id="hero_section_bg_img" src={bannerImg}></img>
+                <img
+                  id="hero_section_bg_img"
+                  src={
+                    selectedImage
+                      ? selectedImage
+                      : selectedUserId
+                      ? selectedUserId.avatar !== ""
+                        ? selectedUserId.avatar
+                        : bannerImg
+                      : bannerImg
+                  }
+                ></img>
                 <div id="hero_sec_img_overlay">
                   <div className="s_p_pfp_div">
                     <img

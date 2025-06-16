@@ -5,7 +5,7 @@ import AddIcon from "@mui/icons-material/Add";
 import AccountBoxSharpIcon from "@mui/icons-material/AccountBoxSharp";
 import SendIcon from "@mui/icons-material/Send";
 //
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import "../Styles/ChatRoom.css";
 import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
@@ -25,7 +25,9 @@ const ChatRoom = () => {
 
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
+
   const scrollDiv = useRef();
+  const messageRef = useRef();
 
   const HandleMessageSubmit = () => {
     socket.emit("send_group_message", {
@@ -40,8 +42,21 @@ const ChatRoom = () => {
     };
     sendMessage(payload);
     console.log(scrollDiv.current);
-    scrollDiv.current.scrollTop = scrollDiv.current.scrollHeight;
+
+    scrollDiv.current?.scrollTo({
+      top: scrollDiv.current.scrollHeight,
+      behavior: "smooth",
+    });
+    // console.log(scrollDiv.current);
   };
+
+  useEffect(() => {
+    console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    scrollDiv.current?.scrollTo({
+      top: scrollDiv.current.scrollHeight,
+      behavior: "smooth",
+    });
+  }, []);
 
   return (
     <>
@@ -77,7 +92,7 @@ const ChatRoom = () => {
             <div id="ch_main_inner_div" ref={scrollDiv}>
               {/*  */}
               {messages.map((item) => (
-                <MessageGrid message={item} />
+                <MessageGrid ref={messageRef} message={item} />
               ))}
               {/*  */}
             </div>

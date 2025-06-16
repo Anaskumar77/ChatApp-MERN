@@ -89,6 +89,7 @@ const ChatStore = create((set, get) => ({
       console.log("get all room", res);
 
       if (res.status === 200) {
+        console.log(typeof res.data, res.data);
         set({ AllChats: res.data });
       } else {
         console.log(res);
