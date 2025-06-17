@@ -11,16 +11,16 @@ import onlineUsers from "../lib/onlineUsers.js";
 
 export const createGroup = async (req, res) => {
   const userId = req.user._id;
-  const usersList = req.body;
+  const roomModel = req.body;
 
-  if (!userId || !usersList)
+  if (!userId || !roomModel)
     return res.json({ message: "please provide users list" });
 
   try {
     const newRoomModel = new RoomModel({
-      name: "untitled",
+      name: roomModel.groupName == "" ? "untitled" : roomModel.groupName,
       isGroup: true,
-      users: [...usersList, userId],
+      users: [...roomModel.selectedIds, userId],
       admin: [userId],
     });
     const createdRoom = await newRoomModel.save();

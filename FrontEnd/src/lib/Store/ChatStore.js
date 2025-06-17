@@ -70,7 +70,6 @@ const ChatStore = create((set, get) => ({
         }
       );
       set({ searchedUsers: res.data });
-      console.log(res.data);
     } catch (err) {
       console.error("getSearchedUsers error : ", err.message);
     }
