@@ -38,6 +38,7 @@ const AuthStore = create((set, get) => ({
 
     socket.on("getOnlineUsers", (userIds) => {
       set({ onlineUsers: userIds.filter((id) => id !== get().authUser._id) });
+      console.log(userIds);
     });
     const { appendMessages, messages } = ChatStore.getState();
 

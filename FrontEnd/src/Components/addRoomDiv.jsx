@@ -34,12 +34,12 @@ const AddRoomDiv = () => {
   //====================================================================
 
   useEffect(() => {
+    setSelectedIds(selectedGroupMembers.map((item) => item._id));
     if (trigger) {
       HandleCreateRoomSubmit(isGroupOn);
       setTrigger(false);
     }
-    const selectedMembersIds = selectedGroupMembers.map((item) => item._id);
-    setSelectedIds(selectedMembersIds);
+    // setSelectedIds(selectedMembersIds);
   }, [selectedGroupMembers]);
 
   const HandleCreateRoomSubmit = (isGroupOn) => {
@@ -49,14 +49,12 @@ const AddRoomDiv = () => {
         selectedIds,
       };
       createRoom(roomModel, isGroupOn);
-    } else {
-      createRoom(selectedIds, isGroupOn);
     }
+    // } else {
+    //   console.log(selectedIds);
+    //   createRoom(selectedIds, isGroupOn);
+    // }
   };
-
-  useEffect(() => {
-    if (!isGroupOn) setSelectedGroupMembers([]);
-  }, [isGroupOn]);
 
   const IndividualUser = ({ info }) => {
     return (
@@ -71,7 +69,9 @@ const AddRoomDiv = () => {
               setSelectedGroupMembers((prev) => [...prev, info]);
             }
           } else {
-            setSelectedGroupMembers((prev) => [...prev, info]);
+            // setSelectedGroupMembers([info]);
+            createRoom([info._id], false);
+
             setTrigger(true);
           }
         }}

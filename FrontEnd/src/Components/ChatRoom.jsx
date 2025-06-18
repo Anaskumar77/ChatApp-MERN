@@ -18,6 +18,7 @@ const ChatRoom = () => {
 
   const authUser = AuthStore((s) => s.authUser);
   const socket = AuthStore((s) => s.socket);
+  const onlineUsers = AuthStore((s) => s.onlineUsers);
 
   const selectedUser = ChatStore((s) => s.selectedUser);
   const sendMessage = ChatStore((s) => s.sendMessage);
@@ -47,7 +48,6 @@ const ChatRoom = () => {
       top: scrollDiv.current.scrollHeight,
       behavior: "smooth",
     });
-    // console.log(scrollDiv.current);
   };
 
   useEffect(() => {
@@ -56,7 +56,8 @@ const ChatRoom = () => {
       top: scrollDiv.current.scrollHeight,
       behavior: "smooth",
     });
-  }, []);
+    console.log(selectedUser, onlineUsers);
+  }, [selectedUser, onlineUsers]);
 
   return (
     <>
@@ -74,7 +75,13 @@ const ChatRoom = () => {
             </div>
             <div id="ch_h_name_lastSeen_div">
               <h5>{selectedUser.name}</h5>
-              <h6>last seen</h6>
+              <h6>
+                {selectedUser.users.some((user) =>
+                  onlineUsers.includes(user._id)
+                ) == true
+                  ? "online"
+                  : "offline"}
+              </h6>
             </div>
             <div id="ch_h_options_div">
               <div className="ch_h_option">

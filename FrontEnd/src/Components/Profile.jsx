@@ -3,6 +3,7 @@ import ChatStore from "../lib/Store/ChatStore.js";
 import AuthStore from "../lib/Store/AuthStore.js";
 import "../Styles/Profile.css";
 import bannerImg from "/defaultBanner.jpg";
+import pfp from "/defaultProfile.jpg";
 const Profile = () => {
   const imageUpload = AuthStore((s) => s.imageUpload);
   const selectedUserId = ChatStore((s) => s.selectedUserId);
@@ -57,8 +58,8 @@ const Profile = () => {
                           : selectedUserId
                           ? selectedUserId.avatar !== ""
                             ? selectedUserId.avatar
-                            : bannerImg
-                          : bannerImg
+                            : pfp
+                          : pfp
                       }
                     ></img>
                     <div className="pfp_edit_button">
