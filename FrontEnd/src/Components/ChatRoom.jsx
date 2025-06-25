@@ -10,7 +10,8 @@ import "../Styles/ChatRoom.css";
 import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
 import MessageGrid from "./MessageGrid.jsx";
-
+import EmptyChat from "./EmptyChat.jsx";
+// import pfp from "/defaultProfile.jpg";
 //
 
 const ChatRoom = () => {
@@ -62,16 +63,20 @@ const ChatRoom = () => {
   return (
     <>
       {selectedUser === null ? (
-        <div>select a chat</div>
+        <EmptyChat />
       ) : (
         <div id="chat_room_container">
           <header>
             <div id="ch_h_pfp_div">
-              {selectedUser.Group_avatar === "" ? (
+              {/* {selectedUser.Group_avatar === "" ? (
                 <AccountBoxSharpIcon id="AccountBoxSharpIcon" />
               ) : (
                 <img src={selectedUser.Group_avatar}></img>
-              )}
+              )} */}
+              {
+                // selectedUser.isGroup === true ? pfp :
+                // selectedUser.users.filter((user) => user._id !== authUser._id).avatar !== "" ?
+              }
             </div>
             <div id="ch_h_name_lastSeen_div">
               <h5>{selectedUser.name}</h5>

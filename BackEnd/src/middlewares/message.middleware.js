@@ -4,7 +4,6 @@ import UserModel from "../Models/userModel.js";
 import { io, getReceiverSocketId } from "../Socket.js";
 import multer from "multer";
 import cloudinary from "../lib/CloudinaryConfig.js";
-import onlineUsers from "../lib/onlineUsers.js";
 
 //=================================================================
 // Create Group and respond with RoomModel response
@@ -43,7 +42,7 @@ export const createGroup = async (req, res) => {
 export const createPrivate = async (req, res) => {
   const receiverIdList = req.body;
   const userId = req.user._id;
-
+  console.log(receiverIdList);
   const receiverId = receiverIdList[0]; //accessing the only element
 
   if (!userId || !receiverId)
@@ -79,7 +78,7 @@ export const createPrivate = async (req, res) => {
     //
   } catch (err) {
     //
-    console.log(err.message);
+    console.log(err);
     return res
       .status(500)
       .json({ message: "failed to create private room model" });

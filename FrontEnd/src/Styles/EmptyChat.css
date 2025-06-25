@@ -1,0 +1,76 @@
+#EmptyChat_container {
+  flex: 1;
+  min-width: 400px;
+  height: 100%;
+  background-color: rgb(0, 0, 0);
+  --gap: 8px;
+  padding: var(--gap);
+  container-type: size;
+  container-name: EmptyChat;
+}
+#EC_sub_container {
+  width: 100%;
+  height: 100%;
+  border-radius: calc(var(--gap) * 2);
+  background: linear-gradient(0deg, rgb(33, 20, 49), rgb(208, 126, 255));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+#EC_background_img {
+  position: absolute;
+  min-height: 100%;
+  min-width: 100%;
+}
+
+#EC_img {
+  width: 50%;
+  z-index: 2;
+  animation: floating 3s ease-in 0s infinite alternate;
+}
+#EC_text_div {
+  z-index: 2;
+  width: 100%;
+  height: 7rem;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  padding-left: 3rem;
+}
+.EC_text {
+  font-size: x-large;
+  color: rgb(240, 211, 255);
+  font-weight: 400;
+}
+.EC_text_cactus {
+  height: 4rem;
+}
+
+@keyframes floating {
+  0% {
+    translate: -5px 20px;
+  }
+  100% {
+    translate: 5px 0px;
+  }
+}
+
+/* @container EmptyChat (max-width: 480px) {
+} */
+@container EmptyChat  (min-width: 481px) {
+  .EC_text {
+    font-size: 2.5rem;
+  }
+  .EC_text_cactus {
+    height: 5rem;
+  }
+}
+/* @container EmptyChat  (min-width: 768px) {
+}
+@container EmptyChat  (min-width: 992px) {
+}
+@container EmptyChat (min-width: 1281px) {
+} */
