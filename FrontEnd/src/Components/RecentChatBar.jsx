@@ -34,7 +34,7 @@ export const MessagePreviewDiv = ({ chatInfo, index }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{
         delay: index * 0.2,
-        duration: 0.3,
+        duration: 1.5,
         ease: "easeOut",
       }}
       className="p-0"

@@ -7,6 +7,9 @@
   padding: var(--gap);
   container-type: size;
   container-name: EmptyChat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 #EC_sub_container {
   width: 100%;
@@ -19,6 +22,7 @@
   justify-content: center;
   position: relative;
   overflow: hidden;
+  animation: expanding_EmptyChatRoom 0.8s ease-in-out;
 }
 #EC_background_img {
   position: absolute;
@@ -74,3 +78,11 @@
 }
 @container EmptyChat (min-width: 1281px) {
 } */
+@keyframes expanding_EmptyChatRoom {
+  0% {
+    width: 400px;
+  }
+  100% {
+    width: 100%;
+  }
+}

@@ -66,6 +66,7 @@
   display: flex;
   align-items: end;
   justify-content: center;
+  background: linear-gradient(0deg, rgb(33, 20, 49), rgb(194, 88, 255));
 }
 #ch_main_inner_div {
   width: 100%;

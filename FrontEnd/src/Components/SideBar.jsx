@@ -1,35 +1,52 @@
 import "../Styles/SideBar.css";
 import TelegramIcon from "@mui/icons-material/Telegram";
-import ForumIcon from "@mui/icons-material/Forum";
-import ChatIcon from "@mui/icons-material/Chat";
-import PermContactCalendarIcon from "@mui/icons-material/PermContactCalendar";
-import CallIcon from "@mui/icons-material/Call";
 import SettingsIcon from "@mui/icons-material/Settings";
+import singleChatIcon from "/single_chat.png";
+import GroupChatIcon from "/group_chat.png";
+import defaultProfile from "/defaultProfile.jpg";
+import PhoneBookIcon from "/phone_book.png";
+import AuthStore from "../lib/Store/AuthStore";
 const SideBar = () => {
+  const authUser = AuthStore((s) => s.authUser);
+
   return (
     <div id="SideBar_Container">
-      <div className="SideBar_option">
-        <TelegramIcon />
+      <div id="SideBar_sub_container">
+        <div className="SideBar_option">
+          <div id="SB_Logo_div">
+            <TelegramIcon className="SB_Logo" />
+          </div>
+        </div>
+        <div id="SideBar_Options_div">
+          <div className="SideBar_option">
+            <img className="SB_icons" src={GroupChatIcon}></img>
+            <h6>Group</h6>
+          </div>
+          <div className="SideBar_option">
+            <img className="SB_icons" src={singleChatIcon}></img>
+
+            <h6>Chat</h6>
+          </div>
+          <div className="SideBar_option">
+            <img src={PhoneBookIcon}></img>
+            <h6>Users</h6>
+          </div>
+        </div>
+        <div className="SideBar_option SB_settingsDiv">
+          <SettingsIcon id="SB_settings" />
+          <h6>Settings</h6>
+        </div>
+        <div className="SideBar_option ">
+          <div className="SB_profileDiv">
+            <img
+              id="SB_profile"
+              src={authUser?.avatar ? authUser.avatar : defaultProfile}
+            ></img>
+          </div>
+          <h6>profile</h6>
+        </div>
       </div>
-      <div id="SideBar_Options_div">
-        <div className="SideBar_option">
-          <ForumIcon></ForumIcon>
-          group
-        </div>
-        <div className="SideBar_option">
-          <ChatIcon />
-          chat
-        </div>
-        <div className="SideBar_option">
-          <CallIcon />
-        </div>
-        <div className="SideBar_option">
-          <PermContactCalendarIcon />
-        </div>
-        <div className="SideBar_option">
-          <SettingsIcon />
-        </div>
-      </div>
+
       <div id="SideBar_Profile_Icon_div SideBar_option"></div>
     </div>
   );
