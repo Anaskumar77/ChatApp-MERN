@@ -1,8 +1,6 @@
 import CallIcon from "@mui/icons-material/Call";
 import SearchIcon from "@mui/icons-material/Search";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import AddIcon from "@mui/icons-material/Add";
-import AccountBoxSharpIcon from "@mui/icons-material/AccountBoxSharp";
 import SendIcon from "@mui/icons-material/Send";
 //
 import { useState, useRef, useEffect } from "react";
@@ -11,6 +9,7 @@ import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
 import MessageGrid from "./MessageGrid.jsx";
 import EmptyChat from "./EmptyChat.jsx";
+import patternBG from "/patternBG.png";
 // import pfp from "/defaultProfile.jpg";
 //
 
@@ -28,10 +27,26 @@ const ChatRoom = () => {
   const [message, setMessage] = useState("");
   const [file, setFile] = useState(null);
 
+  const imgInput = useRef();
   const scrollDiv = useRef();
   const messageRef = useRef();
 
-  const HandleMessageSubmit = () => {
+  const imageStoring = (e) => {
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(e.target.files[0]);
+      reader.onload = async () => {
+        const base64Image = reader.result;
+        setFile(base64Image);
+        console.log(file);
+      };
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {}, []);
+
+  const HandleMessageSubmit = async () => {
     socket.emit("send_group_message", {
       groupId: selectedUser._id,
       senderId: authUser._id,
@@ -42,8 +57,13 @@ const ChatRoom = () => {
       message: message,
       media: file,
     };
-    sendMessage(payload);
-    console.log(scrollDiv.current);
+    const res = await sendMessage(payload);
+
+    if (res == 201) {
+      console.log(res);
+      setFile(null);
+      setMessage("");
+    }
 
     scrollDiv.current?.scrollTo({
       top: scrollDiv.current.scrollHeight,
@@ -52,12 +72,10 @@ const ChatRoom = () => {
   };
 
   useEffect(() => {
-    console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
     scrollDiv.current?.scrollTo({
       top: scrollDiv.current.scrollHeight,
       behavior: "smooth",
     });
-    console.log(selectedUser, onlineUsers);
   }, [selectedUser, onlineUsers]);
 
   return (
@@ -101,6 +119,7 @@ const ChatRoom = () => {
             </div>
           </header>
           <div id="ch_main_div">
+            {/* <img id="ch_pattern_bg" src={patternBG}></img> */}
             <div id="ch_main_inner_div" ref={scrollDiv}>
               {/*  */}
               {messages.map((item) => (
@@ -110,26 +129,35 @@ const ChatRoom = () => {
             </div>
           </div>
           <footer>
-            <div id="ch_f_addButton">
-              {/* <AddIcon id="AddIcon" /> */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                height="24px"
-                viewBox="0 -960 960 960"
-                width="24px"
-                fill="#ffffff"
-              >
-                <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
-              </svg>
+            <div id="ch_f_addButton_div">
+              <div id="ch_f_addButton">
+                <input
+                  id="ch_f_fileInput"
+                  type="file"
+                  accept="image/*"
+                  ref={imgInput}
+                  onChange={(e) => imageStoring(e)}
+                ></input>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  height="24px"
+                  viewBox="0 -960 960 960"
+                  width="24px"
+                  fill="#ffffff"
+                >
+                  <path d="M720-330q0 104-73 177T470-80q-104 0-177-73t-73-177v-370q0-75 52.5-127.5T400-880q75 0 127.5 52.5T580-700v350q0 46-32 78t-78 32q-46 0-78-32t-32-78v-370h80v370q0 13 8.5 21.5T470-320q13 0 21.5-8.5T500-350v-350q-1-42-29.5-71T400-800q-42 0-71 29t-29 71v370q-1 71 49 120.5T470-160q70 0 119-49.5T640-330v-390h80v390Z" />
+                </svg>
+              </div>
             </div>
-            <input
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              id="ch_f_input"
-              type="text"
-              placeholder="write a message"
-            ></input>
-            <div className="hello"></div>
+            <div id="ch_f_input_div">
+              <input
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                id="ch_f_input"
+                type="text"
+                placeholder="write a message"
+              ></input>
+            </div>
 
             <div
               id="ch_f_sendButton"
@@ -139,6 +167,15 @@ const ChatRoom = () => {
               <SendIcon id="SendIcon" />
             </div>
           </footer>
+          <div
+            id="ch_f_image_preview_div"
+            style={{ display: file == null ? "none" : null }}
+          >
+            <img
+              id="ch_f_image_preview"
+              src={file == null ? "none" : file}
+            ></img>
+          </div>
         </div>
       )}
     </>

@@ -139,6 +139,7 @@ const ChatStore = create((set, get) => ({
       if (res.status == 201) {
         console.log("sendMessage reposnse from backEnd :", res.data);
         // set((state) => ({ messages: [...state.messages, res.data] }));
+        return 201;
       } else {
         console.log(res);
       }

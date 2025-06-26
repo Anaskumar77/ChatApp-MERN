@@ -128,20 +128,23 @@ const RecentChatBar = () => {
           </div>
           <h2>Chats</h2>
           <div id="ChatBar_RecentMessages">
-            {/* ["All", "Online", "Private", "Group"] */}
-            {currentTab === "All"
-              ? AllChats.map((item, index) => (
-                  <MessagePreviewDiv chatInfo={item} index={index} />
-                ))
-              : currentTab === "Online"
-              ? AllChats.filter((chat) =>
-                  chat.users.some((userID) => onlineUsers?.includes(userID))
-                )
-                  .filter((user) => user.isGroup === false)
-                  .map((item, index) => (
+            <div id="Scroll_RecentMessages">
+              {currentTab === "All"
+                ? AllChats.map((item, index) => (
                     <MessagePreviewDiv chatInfo={item} index={index} />
                   ))
-              : null}
+                : currentTab === "Online"
+                ? AllChats.filter((chat) =>
+                    chat.users.some((userID) => onlineUsers?.includes(userID))
+                  )
+                    .filter((user) => user.isGroup === false)
+                    .map((item, index) => (
+                      <MessagePreviewDiv chatInfo={item} index={index} />
+                    ))
+                : null}
+              <div id="rc_fake_space"></div>
+            </div>
+
             <div
               id="r_cb_floating_button"
               onClick={() => setIsAddRoomVisibleTrue()}

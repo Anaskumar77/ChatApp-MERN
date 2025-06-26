@@ -48,7 +48,7 @@
 }
 
 .m_g_content {
-  background: linear-gradient(180deg, #5b146f, #ff009c);
+  background: linear-gradient(180deg, #004f8f, #38a4fc78);
   min-height: 40px;
   display: flex;
   align-items: center;
@@ -90,7 +90,7 @@
   /* margin: 10px 10px 0px 0px; */
 }
 .m_margin_reverse {
-  background: linear-gradient(180deg, #38663c, #6be68e);
+  background: linear-gradient(180deg, #37b642, #17d01a6d);
   margin: 4px 10px 0px 0px;
   border-radius: 14px 0px 14px 14px;
 }

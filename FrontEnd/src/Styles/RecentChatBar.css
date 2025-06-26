@@ -9,6 +9,7 @@
   height: 100dvh;
   overflow-y: hidden;
   min-width: 300px;
+  max-width: 500px;
   position: relative;
 }
 #ChatBar_search_div {
@@ -41,15 +42,16 @@
 #ChatBar_RecentMessages {
   width: 100%;
   min-height: 0;
-  overflow-y: auto;
+  overflow-y: scroll;
   height: 100vh;
-  /* height:; */
-  position: relative;
   scrollbar-width: none;
   scroll-behavior: smooth;
-  display: flex;
-  flex-direction: column;
+  /* display: flex;
+  flex-direction: column; */
   padding: 6px;
+}
+#Scroll_RecentMessages {
+  display: grid;
   gap: 6px;
 }
 
@@ -108,7 +110,7 @@
 #r_cb_floating_button {
   position: absolute;
   right: 25px;
-  bottom: 156px;
+  bottom: 25px;
   width: 60px;
   aspect-ratio: 1/1;
   border-radius: 10px;
@@ -126,4 +128,8 @@
   gap: 10px;
   /* justify-content: space-evenly; */
   /* background-color: rgb(71, 71, 71); */
+}
+#rc_fake_space {
+  height: 300px;
+  width: 100%;
 }
