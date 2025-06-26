@@ -49,7 +49,14 @@ const MessageGrid = ({ message }) => {
                 message.sender?._id == authUser._id ? "m_margin_reverse" : null
               }`}
             >
-              <h6 id="m_g_message">{message.content}</h6>
+              {message.media ? (
+                <div id="m_g_media_div">
+                  <img id="m_g_media" src={message.media}></img>
+                </div>
+              ) : null}
+              <div id="m_g_message_div">
+                <h6 id="m_g_message">{message.content}</h6>
+              </div>
             </div>
           </div>
         </div>
