@@ -6,7 +6,7 @@ import AuthStore from "../lib/Store/AuthStore.js";
 import AddRoomDiv from "./addRoomDiv.jsx";
 import AddIcon from "@mui/icons-material/Add";
 import pfp from "/defaultProfile.jpg";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 
 export const MessagePreviewDiv = ({ chatInfo, index }) => {
@@ -17,6 +17,7 @@ export const MessagePreviewDiv = ({ chatInfo, index }) => {
   const authUser = AuthStore((s) => s.authUser);
   const getChats = ChatStore((s) => s.getChats);
   const setSelectedUserId = ChatStore((s) => s.setSelectedUserId);
+  const setIsSearchOpen = ChatStore((s) => s.setIsSearchOpen);
 
   const RecentMessageClick = (user) => {
     //
@@ -41,7 +42,10 @@ export const MessagePreviewDiv = ({ chatInfo, index }) => {
     >
       <div
         key={chatInfo._id}
-        onClick={() => RecentMessageClick(chatInfo)}
+        onClick={() => {
+          setIsSearchOpen(false);
+          RecentMessageClick(chatInfo);
+        }}
         className="messagePreviewDiv"
       >
         <div className="mp_avatarContainer">
@@ -108,94 +112,87 @@ const RecentChatBar = () => {
   const isAddRoomVisible = ChatStore((s) => s.isAddRoomVisible);
   const setIsAddRoomVisibleTrue = ChatStore((s) => s.setIsAddRoomVisibleTrue);
 
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [searchInput, setSearchInput] = useState(null);
-
+  const [searchInput, setSearchInput] = useState("");
+  const isSearchOpen = ChatStore((s) => s.isSearchOpen);
+  const setIsSearchOpen = ChatStore((s) => s.setIsSearchOpen);
   //
-
-  useEffect(() => {
-    console.log(AllChats);
-  }, []);
-
   const HandleInputChange = (e) => {
-    const input = e.target.value.trim();
-    if (input !== "") {
-      setIsSearchOpen(true);
-
-      setSearchInput(input);
-    } else {
-      setIsSearchOpen(false);
-    }
-    console.log(isSearchOpen, searchInput);
+    setSearchInput(e.target.value);
+    setIsSearchOpen(e.target.value.trim() !== "");
   };
 
   //
-
-  const ChatBarContainer = () => {
-    return (
-      <>
-        <div id="r_chatbar_container">
-          <div id="ChatBar_search_div">
-            <input
-              type="input"
-              placeholder="Search"
-              onChange={(e) => HandleInputChange(e)}
-            ></input>
-          </div>
-          {!isSearchOpen ? (
-            <>
-              <div id="ChatBar_slider_options">
-                <ScrollableTabsButtonPrevent />
-              </div>
-              <div id="ChatBar_RecentMessages">
-                <div id="Scroll_RecentMessages">
-                  {currentTab === "All"
-                    ? AllChats.map((item, index) => (
+  return (
+    <>
+      <div id="r_chatbar_container">
+        <div id="ChatBar_search_div">
+          <input
+            type="text"
+            placeholder="Search"
+            value={searchInput || ""}
+            onChange={(e) => {
+              HandleInputChange(e);
+            }}
+          ></input>
+        </div>
+        {!isSearchOpen ? (
+          <>
+            <div id="ChatBar_slider_options">
+              <ScrollableTabsButtonPrevent />
+            </div>
+            <div id="ChatBar_RecentMessages">
+              <div id="Scroll_RecentMessages">
+                {currentTab === "All"
+                  ? AllChats.map((item, index) => (
+                      <MessagePreviewDiv chatInfo={item} index={index} />
+                    ))
+                  : currentTab === "Online"
+                  ? AllChats.filter((chat) =>
+                      chat.users.some((userID) =>
+                        onlineUsers?.includes(userID._id)
+                      )
+                    )
+                      .filter((user) => user.isGroup === false)
+                      .map((item, index) => (
                         <MessagePreviewDiv chatInfo={item} index={index} />
                       ))
-                    : currentTab === "Online"
-                    ? AllChats.filter((chat) =>
-                        chat.users.some((userID) =>
-                          onlineUsers?.includes(userID._id)
-                        )
+                  : null}
+                {currentTab === "Private"
+                  ? AllChats.filter((chat) => chat.isGroup == false).map(
+                      (chat, index) => (
+                        <MessagePreviewDiv chatInfo={chat} index={index} />
                       )
-                        .filter((user) => user.isGroup === false)
-                        .map((item, index) => (
-                          <MessagePreviewDiv chatInfo={item} index={index} />
-                        ))
-                    : null}
-                  {currentTab === "Private"
-                    ? AllChats.filter((chat) => chat.isGroup == false).map(
-                        (chat, index) => (
-                          <MessagePreviewDiv chatInfo={chat} index={index} />
-                        )
+                    )
+                  : null}
+                {currentTab === "Group"
+                  ? AllChats.filter((chat) => chat.isGroup == true).map(
+                      (chat, index) => (
+                        <MessagePreviewDiv chatInfo={chat} index={index} />
                       )
-                    : null}
-                  {currentTab === "Group"
-                    ? AllChats.filter((chat) => chat.isGroup == true).map(
-                        (chat, index) => (
-                          <MessagePreviewDiv chatInfo={chat} index={index} />
-                        )
-                      )
-                    : null}
-                  <div id="rc_fake_space"></div>
-                </div>
-
-                <div
-                  id="r_cb_floating_button"
-                  onClick={() => setIsAddRoomVisibleTrue()}
-                >
-                  <AddIcon />
-                </div>
+                    )
+                  : null}
+                <div id="rc_fake_space"></div>
               </div>
-            </>
-          ) : null}
-        </div>
-        {isAddRoomVisible ? <AddRoomDiv /> : null}
-      </>
-    );
-  };
-  return <ChatBarContainer />;
+
+              <div
+                id="r_cb_floating_button"
+                onClick={() => setIsAddRoomVisibleTrue()}
+              >
+                <AddIcon />
+              </div>
+            </div>
+          </>
+        ) : (
+          AllChats.filter((item) =>
+            item.name.toLowerCase().includes(searchInput)
+          ).map((item, index) => (
+            <MessagePreviewDiv chatInfo={item} index={index} />
+          ))
+        )}
+      </div>
+      {isAddRoomVisible ? <AddRoomDiv /> : null}
+    </>
+  );
 };
 
 export default RecentChatBar;

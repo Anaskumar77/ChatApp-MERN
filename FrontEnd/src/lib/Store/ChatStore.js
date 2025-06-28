@@ -10,6 +10,7 @@ const ChatStore = create((set, get) => ({
   isAddRoomVisible: false,
   isChatRoomVisible: true,
   isProfileSecVisible: true,
+  isSearchOpen: false,
 
   isUsersLoading: false,
   isMessagesLoading: false,
@@ -22,6 +23,9 @@ const ChatStore = create((set, get) => ({
   GroupChats: [], // dynamic
 
   //=================================================================================
+  setIsSearchOpen: (Boolean) => {
+    set({ isSearchOpen: Boolean });
+  },
   appendMessages: (newMessage) => {
     set((state) => ({ messages: [...state.messages, newMessage] })); //append new messages
   },
@@ -32,7 +36,6 @@ const ChatStore = create((set, get) => ({
 
   setCurrentTab: (tabName) => {
     set({ currentTab: tabName });
-    console.log("current tab : ", get().currentTab);
   },
   setSearchedUsers: (data) => {
     set({ searchedUsers: data });
