@@ -1,2 +1,4 @@
 .env
 node_modules/
+text.txt
+api.rest

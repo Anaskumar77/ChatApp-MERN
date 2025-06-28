@@ -6,7 +6,7 @@ import AuthStore from "../lib/Store/AuthStore.js";
 import AddRoomDiv from "./addRoomDiv.jsx";
 import AddIcon from "@mui/icons-material/Add";
 import pfp from "/defaultProfile.jpg";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 
 export const MessagePreviewDiv = ({ chatInfo, index }) => {
@@ -30,11 +30,11 @@ export const MessagePreviewDiv = ({ chatInfo, index }) => {
   return (
     <motion.div
       key={chatInfo._id}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 100 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        delay: index * 0.2,
-        duration: 1.5,
+        delay: index * 0.1,
+        duration: 0.8,
         ease: "easeOut",
       }}
       className="p-0"
@@ -108,11 +108,26 @@ const RecentChatBar = () => {
   const isAddRoomVisible = ChatStore((s) => s.isAddRoomVisible);
   const setIsAddRoomVisibleTrue = ChatStore((s) => s.setIsAddRoomVisibleTrue);
 
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [searchInput, setSearchInput] = useState(null);
+
   //
 
   useEffect(() => {
     console.log(AllChats);
   }, []);
+
+  const HandleInputChange = (e) => {
+    const input = e.target.value.trim();
+    if (input !== "") {
+      setIsSearchOpen(true);
+
+      setSearchInput(input);
+    } else {
+      setIsSearchOpen(false);
+    }
+    console.log(isSearchOpen, searchInput);
+  };
 
   //
 
@@ -121,37 +136,60 @@ const RecentChatBar = () => {
       <>
         <div id="r_chatbar_container">
           <div id="ChatBar_search_div">
-            <input type="input" placeholder="Search"></input>
+            <input
+              type="input"
+              placeholder="Search"
+              onChange={(e) => HandleInputChange(e)}
+            ></input>
           </div>
-          <div id="ChatBar_slider_options">
-            <ScrollableTabsButtonPrevent />
-          </div>
-          <h2>Chats</h2>
-          <div id="ChatBar_RecentMessages">
-            <div id="Scroll_RecentMessages">
-              {currentTab === "All"
-                ? AllChats.map((item, index) => (
-                    <MessagePreviewDiv chatInfo={item} index={index} />
-                  ))
-                : currentTab === "Online"
-                ? AllChats.filter((chat) =>
-                    chat.users.some((userID) => onlineUsers?.includes(userID))
-                  )
-                    .filter((user) => user.isGroup === false)
-                    .map((item, index) => (
-                      <MessagePreviewDiv chatInfo={item} index={index} />
-                    ))
-                : null}
-              <div id="rc_fake_space"></div>
-            </div>
+          {!isSearchOpen ? (
+            <>
+              <div id="ChatBar_slider_options">
+                <ScrollableTabsButtonPrevent />
+              </div>
+              <div id="ChatBar_RecentMessages">
+                <div id="Scroll_RecentMessages">
+                  {currentTab === "All"
+                    ? AllChats.map((item, index) => (
+                        <MessagePreviewDiv chatInfo={item} index={index} />
+                      ))
+                    : currentTab === "Online"
+                    ? AllChats.filter((chat) =>
+                        chat.users.some((userID) =>
+                          onlineUsers?.includes(userID._id)
+                        )
+                      )
+                        .filter((user) => user.isGroup === false)
+                        .map((item, index) => (
+                          <MessagePreviewDiv chatInfo={item} index={index} />
+                        ))
+                    : null}
+                  {currentTab === "Private"
+                    ? AllChats.filter((chat) => chat.isGroup == false).map(
+                        (chat, index) => (
+                          <MessagePreviewDiv chatInfo={chat} index={index} />
+                        )
+                      )
+                    : null}
+                  {currentTab === "Group"
+                    ? AllChats.filter((chat) => chat.isGroup == true).map(
+                        (chat, index) => (
+                          <MessagePreviewDiv chatInfo={chat} index={index} />
+                        )
+                      )
+                    : null}
+                  <div id="rc_fake_space"></div>
+                </div>
 
-            <div
-              id="r_cb_floating_button"
-              onClick={() => setIsAddRoomVisibleTrue()}
-            >
-              <AddIcon />
-            </div>
-          </div>
+                <div
+                  id="r_cb_floating_button"
+                  onClick={() => setIsAddRoomVisibleTrue()}
+                >
+                  <AddIcon />
+                </div>
+              </div>
+            </>
+          ) : null}
         </div>
         {isAddRoomVisible ? <AddRoomDiv /> : null}
       </>

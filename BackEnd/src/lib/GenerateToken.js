@@ -7,7 +7,7 @@ const GenerateToken = (userId, res) => {
     res.cookie("authToken", token, {
       httpOnly: true,
       secure: process.env.IS_PRODUCTION === "Yes",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 5 * 24 * 60 * 60 * 1000, // 5 days
     });
     return token;
   } catch (err) {

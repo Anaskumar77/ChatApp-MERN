@@ -25,7 +25,7 @@ export const createGroup = async (req, res) => {
     const createdRoom = await newRoomModel.save();
 
     if (createdRoom) {
-      console.log(createdRoom);
+      // console.log(createdRoom);
       return res.status(201).json(createdRoom);
     } else {
       return res.status(500).josn({ message: "failed creating room model" });
@@ -42,7 +42,7 @@ export const createGroup = async (req, res) => {
 export const createPrivate = async (req, res) => {
   const receiverIdList = req.body;
   const userId = req.user._id;
-  console.log(receiverIdList);
+  // console.log(receiverIdList);
   const receiverId = receiverIdList[0]; //accessing the only element
 
   if (!userId || !receiverId)
@@ -109,9 +109,9 @@ export const searchUsers = async (req, res) => {
 
 export const fetchChatMessages = async (req, res) => {
   //  For getting all messages of a specific room
-  console.log("hello");
+  // console.log("hello");
   const receiverId = req.params.id; // means room id
-  console.log(receiverId);
+  // console.log(receiverId);
 
   if (!receiverId) return res.json({ message: "no receiver id" });
 
@@ -130,8 +130,6 @@ export const fetchChatMessages = async (req, res) => {
         .status(500)
         .json({ message: "fetchChatMessages : failed to fetch messages" });
 
-    let receiver;
-
     return res.status(200).json(messagesRes);
   } catch (err) {
     console.log(err.message);
@@ -148,7 +146,7 @@ export const fetchLatestChats = async (req, res) => {
 
   try {
     //
-    const recentChats = await RoomModel.find({
+    let recentChats = await RoomModel.find({
       $or: [{ users: userId }, { admin: userId }],
     })
       .populate({
@@ -165,7 +163,7 @@ export const fetchLatestChats = async (req, res) => {
       })
       .lean();
 
-    console.log(recentChats);
+    // console.log(recentChats);
 
     if (recentChats) return res.status(200).json(recentChats);
 
@@ -199,7 +197,7 @@ export const sendMessages = async (req, res) => {
           .status(500)
           .json({ message: "error in uploading the file " });
     }
-    console.log("mediaURL: ", mediaURL, groupId);
+    // console.log("mediaURL: ", mediaURL, groupId);
 
     const newMessage = new MessageModel({
       sender: userId,
@@ -227,7 +225,6 @@ export const sendMessages = async (req, res) => {
       path: "sender",
       select: "name avatar",
     });
-    console.log("\n\n\n\n\n2", messagesRes);
 
     io.to(groupId).emit("receive_group_message", messagesRes);
 

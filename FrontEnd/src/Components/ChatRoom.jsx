@@ -9,7 +9,7 @@ import AuthStore from "../lib/Store/AuthStore.js";
 import ChatStore from "../lib/Store/ChatStore.js";
 import MessageGrid from "./MessageGrid.jsx";
 import EmptyChat from "./EmptyChat.jsx";
-import patternBG from "/patternBG.png";
+import defaultProfile from "/defaultProfile.jpg";
 // import pfp from "/defaultProfile.jpg";
 //
 
@@ -86,19 +86,24 @@ const ChatRoom = () => {
         <div id="chat_room_container">
           <header>
             <div id="ch_h_pfp_div">
-              {/* {selectedUser.Group_avatar === "" ? (
-                <AccountBoxSharpIcon id="AccountBoxSharpIcon" />
-              ) : (
-                <img src={selectedUser.Group_avatar}></img>
-              )} */}
-              {
-                // selectedUser.isGroup === true ? pfp :
-                // selectedUser.users.filter((user) => user._id !== authUser._id).avatar !== "" ?
-              }
+              <img
+                id="ch_h_pfp"
+                src={
+                  selectedUser.isGroup === true
+                    ? selectedUser.Group_avatar !== ""
+                      ? selectedUser.Group_avatar
+                      : defaultProfile
+                    : selectedUser.users
+                        .filter((_id) => _id !== authUser._id)
+                        .map((user) =>
+                          user.avatar !== "" ? user.avatar : defaultProfile
+                        )[0]
+                }
+              ></img>
             </div>
             <div id="ch_h_name_lastSeen_div">
               <h5>{selectedUser.name}</h5>
-              <h6>
+              <h6 id="ch_h_status_text">
                 {selectedUser.users.some((user) =>
                   onlineUsers.includes(user._id)
                 ) == true
@@ -139,6 +144,7 @@ const ChatRoom = () => {
                   onChange={(e) => imageStoring(e)}
                 ></input>
                 <svg
+                  id="ch_f_fileIcon"
                   xmlns="http://www.w3.org/2000/svg"
                   height="24px"
                   viewBox="0 -960 960 960"
@@ -171,6 +177,20 @@ const ChatRoom = () => {
             id="ch_f_image_preview_div"
             style={{ display: file == null ? "none" : null }}
           >
+            <button
+              id="ch_f_image_preview_button"
+              onClick={() => setFile(null)}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                height="24px"
+                viewBox="0 -960 960 960"
+                width="24px"
+                fill="#ffffffa8"
+              >
+                <path d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
+              </svg>
+            </button>
             <img
               id="ch_f_image_preview"
               src={file == null ? "none" : file}

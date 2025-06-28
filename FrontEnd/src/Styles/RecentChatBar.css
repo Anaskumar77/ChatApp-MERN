@@ -3,7 +3,7 @@
 *::after {
   box-sizing: border-box;
 }
-
+/* rgb(33, 20, 49), rgb(208, 126, 255) */
 #r_chatbar_container {
   background-color: #000000;
   height: 100dvh;
@@ -11,6 +11,7 @@
   min-width: 300px;
   max-width: 500px;
   position: relative;
+  /* background-color: rgb(33, 0, 68); */
 }
 #ChatBar_search_div {
   height: 65px;
@@ -18,16 +19,15 @@
   padding: 12px;
   align-items: center;
   justify-content: center;
-  background-color: #2b2c2b;
 }
 #ChatBar_search_div input {
-  background-color: #ffffff61;
   border: none;
   border-radius: 10px;
   width: 100%;
   height: 100%;
   padding-left: 20px;
   caret-color: rgb(111, 1, 155);
+  background-color: rgba(255, 255, 255, 0.108);
 }
 #ChatBar_search_div input:focus {
   outline: none;
@@ -48,6 +48,7 @@
   scroll-behavior: smooth;
   /* display: flex;
   flex-direction: column; */
+  background-color: rgb(0, 0, 0);
   padding: 6px;
 }
 #Scroll_RecentMessages {
@@ -64,11 +65,8 @@
   width: 100%;
   height: 80px;
   display: flex;
-  background: linear-gradient(
-    120deg,
-    rgba(255, 255, 255, 0.08),
-    rgba(255, 255, 255, 0.1)
-  );
+  background-color: rgba(255, 255, 255, 0.076);
+
   border-radius: 10px;
   /* animation: fadeup 0.5s ease-out; */
 }
