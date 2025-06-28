@@ -24,6 +24,7 @@
 }
 .tab_name_div:hover {
   background-color: rgba(255, 255, 255, 0.124);
+  cursor: default;
 }
 
 .current_tab {

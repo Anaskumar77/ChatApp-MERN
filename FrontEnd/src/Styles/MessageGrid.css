@@ -48,7 +48,8 @@
 }
 
 .m_g_content {
-  background: linear-gradient(180deg, #004f8f, #38a4fc78);
+  /* background: linear-gradient(180deg, #004f8f, #38a4fc78); */
+  background-color: blueviolet;
   min-height: 40px;
   display: flex;
   flex-direction: column;
@@ -98,10 +99,8 @@
   /* margin: 10px 10px 0px 0px; */
 }
 .m_margin_reverse {
-  background: linear-gradient(180deg, #37b642, #17d01a6d);
+  /* background: linear-gradient(180deg, #3fcd4b, #17cb1a6d); */
+  background-color: rgb(83, 206, 42);
   margin: 4px 10px 0px 0px;
   border-radius: 14px 0px 14px 14px;
 }
-/*  */
-
-/*  */

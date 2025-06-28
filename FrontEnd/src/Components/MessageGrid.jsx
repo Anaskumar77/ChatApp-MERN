@@ -1,6 +1,6 @@
 import React from "react";
 import "../Styles/MessageGrid.css";
-import pfp from "/image.png";
+import pfp from "/defaultProfile.jpg";
 import AuthStore from "../lib/Store/AuthStore.js";
 import { motion } from "framer-motion";
 

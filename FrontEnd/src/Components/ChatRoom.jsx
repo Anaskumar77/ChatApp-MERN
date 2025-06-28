@@ -78,6 +78,14 @@ const ChatRoom = () => {
     });
   }, [selectedUser, onlineUsers]);
 
+  const [animateStatus, setAnimateStatus] = useState(false);
+
+  useEffect(() => {
+    setAnimateStatus(false);
+    const timeout = setTimeout(() => setAnimateStatus(true), 0);
+    return () => clearTimeout(timeout);
+  }, [onlineUsers]); // or whatever condition triggers change
+
   return (
     <>
       {selectedUser === null ? (
@@ -103,7 +111,10 @@ const ChatRoom = () => {
             </div>
             <div id="ch_h_name_lastSeen_div">
               <h5>{selectedUser.name}</h5>
-              <h6 id="ch_h_status_text">
+              <h6
+                className="ch_h_status_text"
+                id={animateStatus ? "ch_h_status_text" : ""}
+              >
                 {selectedUser.users.some((user) =>
                   onlineUsers.includes(user._id)
                 ) == true
